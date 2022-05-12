@@ -15,6 +15,7 @@
     "react-dom": "^18.1.0",
     "react-scripts": "5.0.1",
     "styled-components": "^5.3.5",
+    "styled-reset": "^4.3.4",
     "typescript": "^4.6.4",
     "web-vitals": "^2.1.4"
   },
@@ -22,7 +23,10 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "eslint './src/**/*.{ts,tsx,js,jsx}'",
+    "lint:fix": "eslint --fix './src/**/*.{ts,tsx,js,jsx}'",
+    "prettier": "prettier --write --config ./.prettierrc './src/**/*.{ts,tsx}'"
   },
   "eslintConfig": {
     "extends": [
@@ -47,8 +51,11 @@
     "@typescript-eslint/parser": "^5.23.0",
     "eslint": "^8.15.0",
     "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-import-resolver-typescript": "^2.7.1",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-jsx-a11y": "^6.5.1",
+    "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.29.4",
     "eslint-plugin-react-hooks": "^4.5.0",
     "prettier": "^2.6.2"
