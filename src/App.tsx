@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 import reset from 'styled-reset';
+
+import TodoList from 'components/TodoList';
 import Input from './components/Input';
 
 const GlobalStyles = createGlobalStyle`
@@ -12,11 +14,13 @@ const Container = styled.section`
 `;
 
 function App(): JSX.Element {
+  const [todoList, setTodoList] = useState<string[]>([]);
+
   return (
     <Container>
       <GlobalStyles />
-      <h1>hello world.</h1>
-      <Input content="content" />
+      <Input todoList={todoList} setTodoList={setTodoList} />
+      <TodoList todoList={todoList} />
     </Container>
   );
 }
