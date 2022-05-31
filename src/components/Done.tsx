@@ -25,6 +25,20 @@ const Container = styled.li`
 
   word-break: break-all;
 
+  animation: rise 0.2s;
+
+  @keyframes rise {
+    0% {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
   button {
     position: relative;
     padding: 0;
@@ -52,28 +66,34 @@ const Container = styled.li`
   }
 `;
 
-interface IProps {
+interface ITodo {
+  id: string;
+  done: boolean;
   content: string;
-  idx: number;
-  doneList: string[];
-  setDoneList: Dispatch<SetStateAction<string[]>>;
+}
+
+interface IProps {
+  content: ITodo;
+  id: string;
+  todoList: ITodo[];
+  setTodoList: Dispatch<SetStateAction<ITodo[]>>;
 }
 // 현재 todoList 를 저장하는 App.tsx로 부터 TodoList.tsx -> Todo.tsx 까지 PropsDrilling 이 심한편
 // 리덕스를 적용시켜보는 것을 적극적으로 검토해보기.
 
 // ReduxToolkit 보단 일반 Redux 먼저 사용해보기!
 
-function Done({ content, idx, doneList, setDoneList }: IProps): JSX.Element {
+function Done({ content, id, todoList, setTodoList }: IProps): JSX.Element {
   const deleteDone = () => {
-    setDoneList(
-      doneList.filter((done, doneIdx) => {
-        return idx !== doneIdx;
+    setTodoList(
+      todoList.filter((done) => {
+        return id !== done.id;
       })
     );
   };
   return (
     <Container>
-      <p>{content}</p>
+      <p>{content.content}</p>
       <button type="button" title="삭제" onClick={deleteDone}>
         <BsDash />
       </button>

@@ -40,9 +40,17 @@ const Title = styled.section`
   text-align: center;
 `;
 
+interface ITodo {
+  id: string;
+  done: boolean;
+  content: string;
+}
+
 function App(): JSX.Element {
-  const [todoList, setTodoList] = useState<string[]>([]);
-  const [doneList, setDoneList] = useState<string[]>([]);
+  const [todoList, setTodoList] = useState<ITodo[]>([]);
+  // const [todoList, setTodoList] = useState<
+  //   { id: string; done: boolean; content: string }[]
+  // >([]);
 
   // Redux 적용 예정이지만 일단 기본적인 내용은 전부 완성 뒤에 적용시키기!
 
@@ -52,12 +60,7 @@ function App(): JSX.Element {
       <InnerContainer>
         <Title>Todo-List</Title>
         <Input todoList={todoList} setTodoList={setTodoList} />
-        <TodoList
-          todoList={todoList}
-          setTodoList={setTodoList}
-          doneList={doneList}
-          setDoneList={setDoneList}
-        />
+        <TodoList todoList={todoList} setTodoList={setTodoList} />
       </InnerContainer>
     </Container>
   );

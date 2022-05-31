@@ -22,6 +22,20 @@ const Container = styled.li`
 
   word-break: break-all;
 
+  animation: rise 0.2s;
+
+  @keyframes rise {
+    0% {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
   button {
     position: relative;
     padding: 0;
@@ -56,49 +70,42 @@ const Container = styled.li`
   }
 `;
 
-interface IProps {
+interface ITodo {
+  id: string;
+  done: boolean;
   content: string;
-  idx: number;
-  todoList: string[];
-  setTodoList: Dispatch<SetStateAction<string[]>>;
-  doneList: string[];
-  setDoneList: Dispatch<SetStateAction<string[]>>;
+}
+
+interface IProps {
+  content: ITodo;
+  id: string;
+  todoList: ITodo[];
+  setTodoList: Dispatch<SetStateAction<ITodo[]>>;
 }
 // 현재 todoList 를 저장하는 App.tsx로 부터 TodoList.tsx -> Todo.tsx 까지 PropsDrilling 이 심한편
 // 리덕스를 적용시켜보는 것을 적극적으로 검토해보기.
 
 // ReduxToolkit 보단 일반 Redux 먼저 사용해보기!
 
-function Todo({
-  content,
-  idx,
-  todoList,
-  setTodoList,
-  doneList,
-  setDoneList,
-}: IProps): JSX.Element {
+function Todo({ content, id, todoList, setTodoList }: IProps): JSX.Element {
   const deleteTodo = () => {
     setTodoList(
-      todoList.filter((todo, todoIdx) => {
-        // 추후 객체로 바꾸면서 uuid 로 전환하기.
-        return idx !== todoIdx;
+      todoList.filter((todo) => {
+        return todo.id !== id;
       })
     );
   };
 
   const completeTodo = () => {
-    setTodoList(
-      todoList.filter((todo, todoIdx) => {
-        // 추후 객체로 바꾸면서 uuid 로 전환하기.
-        setDoneList([...doneList, todo]);
-        return idx !== todoIdx;
-      })
-    );
+    // Object.assign(content, { done: true });
+    const todo = content;
+    todo.done = true;
+    setTodoList([...todoList]);
   };
 
   return (
     <Container>
-      <p>{content}</p>
+      <p>{content.content}</p>
       <div className="buttonWrap">
         <button
           type="button"

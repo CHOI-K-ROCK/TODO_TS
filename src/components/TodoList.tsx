@@ -49,21 +49,27 @@ const Container = styled.section`
   }
 `;
 
-interface IProps {
-  todoList: string[];
-  setTodoList: Dispatch<SetStateAction<string[]>>;
-  doneList: string[];
-  setDoneList: Dispatch<SetStateAction<string[]>>;
+interface ITodo {
+  id: string;
+  done: boolean;
+  content: string;
 }
 
-function TodoList({
-  todoList,
-  setTodoList,
-  doneList,
-  setDoneList,
-}: IProps): JSX.Element {
-  const deleteAllDone = () => {
-    setDoneList([]);
+interface IProps {
+  todoList: ITodo[];
+  setTodoList: Dispatch<SetStateAction<ITodo[]>>;
+}
+
+function TodoList({ todoList, setTodoList }: IProps): JSX.Element {
+  const todos: ITodo[] = todoList.filter((todo) => !todo.done);
+  const dones: ITodo[] = todoList.filter((todo) => todo.done);
+
+  const clearDoneList = () => {
+    setTodoList(
+      todoList.filter((todo) => {
+        return todo.done === false;
+      })
+    );
   };
 
   return (
@@ -71,22 +77,20 @@ function TodoList({
       <div className="todo">
         <ul>
           <div className="title">Todo</div>
-          {todoList.map((content, idx) => {
+          {todos.map((todo, idx) => {
             return (
               <Todo
                 // eslint-disable-next-line react/no-array-index-key
                 key={idx}
-                idx={idx}
-                content={content}
+                id={todo.id}
+                content={todo}
                 todoList={todoList}
                 setTodoList={setTodoList}
-                doneList={doneList}
-                setDoneList={setDoneList}
               />
             );
           })}
         </ul>
-        {todoList.length === 0 && <div className="empty">비어 있습니다.</div>}
+        {todos.length === 0 && <div className="empty">비어 있습니다.</div>}
       </div>
       <div className="done">
         <ul>
@@ -97,25 +101,25 @@ function TodoList({
               className="deleteAll"
               role="button"
               tabIndex={0}
-              onClick={() => deleteAllDone()}
+              onClick={() => clearDoneList()}
             >
               <BsFillTrashFill />
             </div>
           </div>
-          {doneList.map((done, idx) => {
+          {dones.map((todo, idx) => {
             return (
               <Done
                 // eslint-disable-next-line react/no-array-index-key
                 key={idx}
-                idx={idx}
-                content={done}
-                doneList={doneList}
-                setDoneList={setDoneList}
+                id={todo.id}
+                content={todo}
+                todoList={todoList}
+                setTodoList={setTodoList}
               />
             );
           })}
         </ul>
-        {doneList.length === 0 && <div className="empty">비어 있습니다.</div>}
+        {dones.length === 0 && <div className="empty">비어 있습니다.</div>}
       </div>
     </Container>
   );

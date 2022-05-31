@@ -1,6 +1,8 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
-import { BsPlus } from 'react-icons/bs';
 import styled from 'styled-components';
+import { v4 as uuidv4 } from 'uuid';
+
+import { BsPlus } from 'react-icons/bs';
 
 const Container = styled.section`
   position: relative;
@@ -48,10 +50,16 @@ const Container = styled.section`
   }
 `;
 
+interface ITodo {
+  id: string;
+  done: boolean;
+  content: string;
+}
+
 interface IProps {
-  todoList: string[];
-  // 문자열(string)을 가지는 배열([])을 의미한다.
-  setTodoList: Dispatch<SetStateAction<string[]>>;
+  todoList: ITodo[];
+  // 객체를 가지는 배열([])을 의미한다.
+  setTodoList: Dispatch<SetStateAction<ITodo[]>>;
 }
 
 function Input({ todoList, setTodoList }: IProps): JSX.Element {
@@ -65,7 +73,10 @@ function Input({ todoList, setTodoList }: IProps): JSX.Element {
     e.preventDefault();
 
     if (!inputValue) return;
-    setTodoList([...todoList, inputValue]);
+    setTodoList([
+      ...todoList,
+      { id: `${uuidv4()}`, done: false, content: inputValue },
+    ]);
     setInputValue('');
   };
 
