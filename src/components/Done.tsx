@@ -25,12 +25,12 @@ const Container = styled.li`
 
   word-break: break-all;
 
-  animation: rise 0.2s;
+  animation: rise 0.3s;
 
   @keyframes rise {
     0% {
       opacity: 0;
-      transform: translateY(10px);
+      transform: translateY(5px);
     }
 
     100% {

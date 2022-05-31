@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import styled from 'styled-components';
 import { BsFillTrashFill } from 'react-icons/bs';
 import Done from './Done';
@@ -13,7 +13,7 @@ const Container = styled.section`
   grid-template-columns: 1fr 1fr;
   grid-gap: 20px;
 
-  ul .title {
+  .title {
     display: flex;
     justify-content: center;
 
@@ -25,9 +25,22 @@ const Container = styled.section`
 
     font-size: 1.2rem;
     text-align: center;
+  }
 
-    & li {
+  .list_wrapper {
+    min-height: 200px;
+    max-height: max-content;
+
+    .empty {
+      display: grid;
+      place-items: center;
+
       width: 100%;
+      height: 200px;
+
+      & span {
+        color: #555;
+      }
     }
   }
 
@@ -39,13 +52,39 @@ const Container = styled.section`
     font-size: 0.9rem;
     color: #444;
     cursor: pointer;
+
+    &::after {
+      position: absolute;
+      top: -150%;
+
+      display: block;
+
+      visibility: hidden;
+      opacity: 0;
+
+      content: '전체삭제';
+      width: max-content;
+      background-color: #fff;
+      padding: 5px;
+      border-radius: 5px;
+      box-shadow: 0 2px 3px rgba(0, 0, 0, 0.3);
+
+      transition: 0.2s 0.3s;
+    }
+
+    &:hover::after {
+      visibility: visible;
+      opacity: 1;
+    }
   }
 
-  .empty {
-    width: 100%;
-    margin-top: 40px;
-    text-align: center;
-    color: #555;
+  @media screen and (max-width: 1100px) {
+    display: flex;
+    flex-direction: column;
+
+    .deleteAll {
+      top: auto;
+    }
   }
 `;
 
@@ -75,51 +114,65 @@ function TodoList({ todoList, setTodoList }: IProps): JSX.Element {
   return (
     <Container>
       <div className="todo">
-        <ul>
-          <div className="title">Todo</div>
-          {todos.map((todo, idx) => {
-            return (
-              <Todo
-                // eslint-disable-next-line react/no-array-index-key
-                key={idx}
-                id={todo.id}
-                content={todo}
-                todoList={todoList}
-                setTodoList={setTodoList}
-              />
-            );
-          })}
-        </ul>
-        {todos.length === 0 && <div className="empty">비어 있습니다.</div>}
+        <div className="title">Todo</div>
+        <div className="list_wrapper">
+          {todos.length !== 0 ? (
+            <ul>
+              {todos.map((todo, idx) => {
+                return (
+                  <Todo
+                    // eslint-disable-next-line react/no-array-index-key
+                    key={idx}
+                    id={todo.id}
+                    content={todo}
+                    todoList={todoList}
+                    setTodoList={setTodoList}
+                  />
+                );
+              })}
+            </ul>
+          ) : (
+            <div className="empty">
+              <span>할 일이 없습니다.</span>
+            </div>
+          )}
+        </div>
       </div>
       <div className="done">
-        <ul>
-          <div className="title">
-            <span>Done</span>
-            <div
-              title="전체 내역을 삭제합니다."
-              className="deleteAll"
-              role="button"
-              tabIndex={0}
-              onClick={() => clearDoneList()}
-            >
-              <BsFillTrashFill />
-            </div>
+        <div className="title">
+          <span>Done</span>
+          <div
+            title="전체 내역을 삭제합니다."
+            className="deleteAll"
+            role="button"
+            tabIndex={0}
+            onClick={() => clearDoneList()}
+          >
+            <BsFillTrashFill />
           </div>
-          {dones.map((todo, idx) => {
-            return (
-              <Done
-                // eslint-disable-next-line react/no-array-index-key
-                key={idx}
-                id={todo.id}
-                content={todo}
-                todoList={todoList}
-                setTodoList={setTodoList}
-              />
-            );
-          })}
-        </ul>
-        {dones.length === 0 && <div className="empty">비어 있습니다.</div>}
+        </div>
+        <div className="list_wrapper">
+          {dones.length !== 0 ? (
+            <ul>
+              {dones.map((todo, idx) => {
+                return (
+                  <Done
+                    // eslint-disable-next-line react/no-array-index-key
+                    key={idx}
+                    id={todo.id}
+                    content={todo}
+                    todoList={todoList}
+                    setTodoList={setTodoList}
+                  />
+                );
+              })}
+            </ul>
+          ) : (
+            <div className="empty">
+              <span>완료한 항목이 없습니다.</span>
+            </div>
+          )}
+        </div>
       </div>
     </Container>
   );

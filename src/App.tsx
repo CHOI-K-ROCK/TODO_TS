@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 import reset from 'styled-reset';
 
@@ -7,6 +7,10 @@ import Input from './components/Input';
 
 const GlobalStyles = createGlobalStyle`
     ${reset}
+
+    body {
+      font-family: 'NanumSquareRound';
+    }
   `;
 
 const Container = styled.div`
@@ -19,7 +23,8 @@ const Container = styled.div`
 `;
 
 const InnerContainer = styled.section`
-  width: 50%;
+  width: 60%;
+  max-width: 1000px;
 
   display: flex;
   align-items: center;
@@ -30,6 +35,10 @@ const InnerContainer = styled.section`
 
   input {
     margin-bottom: 30px;
+  }
+
+  @media screen and (max-width: 750px) {
+    width: 80%;
   }
 `;
 
@@ -51,6 +60,10 @@ function App(): JSX.Element {
   // const [todoList, setTodoList] = useState<
   //   { id: string; done: boolean; content: string }[]
   // >([]);
+
+  useEffect(() => {
+    window.localStorage.setItem('data', JSON.stringify(todoList));
+  }, [todoList]);
 
   // Redux 적용 예정이지만 일단 기본적인 내용은 전부 완성 뒤에 적용시키기!
 

@@ -85,6 +85,7 @@ function Input({ todoList, setTodoList }: IProps): JSX.Element {
       <form onSubmit={(e) => addTodo(e)}>
         <input
           type="text"
+          placeholder="할일을 작성하세요!"
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
         />
