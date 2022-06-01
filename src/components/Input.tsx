@@ -9,7 +9,7 @@ const Container = styled.section`
   width: 100%;
   height: 70px;
 
-  input {
+  .type_todo {
     width: 100%;
     height: 40px;
 
@@ -85,6 +85,7 @@ function Input({ todoList, setTodoList }: IProps): JSX.Element {
       <form onSubmit={(e) => addTodo(e)}>
         <input
           type="text"
+          className="type_todo"
           placeholder="할일을 작성하세요!"
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}

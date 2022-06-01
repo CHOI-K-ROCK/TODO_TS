@@ -1,6 +1,12 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React, {
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import styled from 'styled-components';
-import { BsCheck, BsDash } from 'react-icons/bs';
+import { BsPencilFill, BsCheck, BsDash } from 'react-icons/bs';
 
 const Container = styled.li`
   display: flex;
@@ -35,12 +41,23 @@ const Container = styled.li`
       transform: translateY(0);
     }
   }
+
+  .edit_input {
+    width: 90%;
+    box-sizing: border-box;
+
+    font-size: 1rem;
+    outline: none;
+    border: none;
+    border-bottom: 1px solid #000;
+  }
+
   .buttonWrap {
     min-width: max-content;
     display: flex;
     column-gap: 10px;
 
-    & button {
+    button {
       position: relative;
       padding: 0;
 
@@ -58,8 +75,17 @@ const Container = styled.li`
 
       transition: 0.1s;
 
+      &.edit svg {
+        position: relative;
+        top: -2px;
+      }
+
       &:hover {
         box-shadow: 0 2px 2px rgba(0, 0, 0, 0.4);
+
+        &.edit {
+          background-color: #e0ffc0;
+        }
 
         &.delete {
           background-color: #ffacac;
@@ -91,6 +117,11 @@ interface IProps {
 // ReduxToolkit 보단 일반 Redux 먼저 사용해보기!
 
 function Todo({ content, id, todoList, setTodoList }: IProps): JSX.Element {
+  const editInput = useRef<HTMLInputElement>(null);
+
+  const [toggleEdit, setToggleEdit] = useState<boolean>(false);
+  const [editValue, setEditValue] = useState<string>(content.content);
+  // 최초값으로 현재 값을 저장하고 있다가, 수정을 누르게 되면 값이 바뀜.
   const deleteTodo = () => {
     setTodoList(
       todoList.filter((todo) => {
@@ -106,27 +137,72 @@ function Todo({ content, id, todoList, setTodoList }: IProps): JSX.Element {
     setTodoList([...todoList]);
   };
 
+  useEffect(() => {
+    if (toggleEdit) {
+      editInput.current?.focus();
+    }
+  }, [toggleEdit]);
+
+  const completeEdit = () => {
+    Object.assign(content, { content: editValue });
+    setToggleEdit(false);
+    setTodoList([...todoList]);
+  };
+
   return (
     <Container>
-      <p>{content.content}</p>
-      <div className="buttonWrap">
-        <button
-          type="button"
-          className="delete"
-          title="삭제"
-          onClick={deleteTodo}
-        >
-          <BsDash />
-        </button>
-        <button
-          type="button"
-          className="done"
-          title="완료로 표시"
-          onClick={completeTodo}
-        >
-          <BsCheck />
-        </button>
-      </div>
+      {!toggleEdit ? (
+        <>
+          <p>{content.content}</p>
+          <div className="buttonWrap">
+            <button
+              type="button"
+              className="edit"
+              title="수정"
+              onClick={() => setToggleEdit(true)}
+            >
+              <BsPencilFill size="0.7rem" />
+            </button>
+            <button
+              type="button"
+              className="delete"
+              title="삭제"
+              onClick={deleteTodo}
+            >
+              <BsDash />
+            </button>
+            <button
+              type="button"
+              className="done"
+              title="완료로 표시"
+              onClick={completeTodo}
+            >
+              <BsCheck />
+            </button>
+          </div>
+        </>
+      ) : (
+        // 수정 토글 시 표시될 부분
+        <>
+          <input
+            value={editValue}
+            className="edit_input"
+            ref={editInput}
+            onChange={(e) => setEditValue(e.target.value)}
+            onBlur={completeEdit}
+          />
+          <div className="buttonWrap">
+            <button
+              type="button"
+              className="done"
+              title="완료로 표시"
+              onClick={completeEdit}
+            >
+              <BsCheck />
+            </button>
+          </div>
+        </>
+      )}
     </Container>
   );
 }

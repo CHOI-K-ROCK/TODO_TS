@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
-import { BsDash } from 'react-icons/bs';
+import { BsDash, BsArrowCounterclockwise } from 'react-icons/bs';
 
 const Container = styled.li`
   display: flex;
@@ -39,29 +39,45 @@ const Container = styled.li`
     }
   }
 
-  button {
-    position: relative;
-    padding: 0;
+  .buttonWrap {
+    min-width: max-content;
+    display: flex;
+    column-gap: 10px;
 
-    width: 1.2rem;
-    height: 1.2rem;
+    button {
+      position: relative;
+      padding: 0;
 
-    margin-left: 10px;
+      width: 1.2rem;
+      height: 1.2rem;
 
-    font-size: 1.2rem;
+      font-size: 1.2rem;
 
-    background-color: #eee;
+      background-color: #eee;
 
-    border: none;
-    border-radius: 50%;
+      border: none;
+      border-radius: 50%;
 
-    cursor: pointer;
+      cursor: pointer;
 
-    transition: 0.1s;
+      transition: 0.1s;
 
-    &:hover {
-      box-shadow: 0 2px 2px rgba(0, 0, 0, 0.4);
-      background-color: #ffacac;
+      &.undo svg {
+        position: relative;
+        top: 1px;
+      }
+
+      &:hover {
+        box-shadow: 0 2px 2px rgba(0, 0, 0, 0.4);
+
+        &.undo {
+          background-color: #97d4fa;
+        }
+
+        &.delete {
+          background-color: #ffacac;
+        }
+      }
     }
   }
 `;
@@ -91,12 +107,27 @@ function Done({ content, id, todoList, setTodoList }: IProps): JSX.Element {
       })
     );
   };
+
+  const undo = () => {
+    Object.assign(content, { done: false });
+    setTodoList([...todoList]);
+  };
   return (
     <Container>
       <p>{content.content}</p>
-      <button type="button" title="삭제" onClick={deleteDone}>
-        <BsDash />
-      </button>
+      <div className="buttonWrap">
+        <button type="button" className="undo" title="되돌리기" onClick={undo}>
+          <BsArrowCounterclockwise size="1rem" />
+        </button>
+        <button
+          type="button"
+          className="delete"
+          title="삭제"
+          onClick={deleteDone}
+        >
+          <BsDash />
+        </button>
+      </div>
     </Container>
   );
 }
