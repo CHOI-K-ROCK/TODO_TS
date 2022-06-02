@@ -41,7 +41,8 @@ function Memory(): JSX.Element {
       <div className="charWrapper">
         {text.split('').map((char, idx) => {
           return (
-            <Char key={char} idx={idx}>
+            // eslint-disable-next-line react/no-array-index-key
+            <Char key={idx} idx={idx}>
               {char}
             </Char>
           );
