@@ -79,7 +79,8 @@ function MenuBar(): JSX.Element {
 
   useEffect(() => {
     setCurrentPath(window.location.pathname);
-  }, []);
+    console.log('?');
+  }, [currentPath]);
   // 새로고침 혹은 페이지 접속 시 현재 경로를 가져온다.
 
   useEffect(() => {
