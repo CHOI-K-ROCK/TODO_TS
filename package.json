@@ -31,7 +31,9 @@
     "eject": "react-scripts eject",
     "lint": "eslint './src/**/*.{ts,tsx,js,jsx}'",
     "lint:fix": "eslint --fix './src/**/*.{ts,tsx,js,jsx}'",
-    "prettier": "prettier --write --config ./.prettierrc './src/**/*.{ts,tsx}'"
+    "prettier": "prettier --write --config ./.prettierrc './src/**/*.{ts,tsx}'",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -63,6 +65,8 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.29.4",
     "eslint-plugin-react-hooks": "^4.5.0",
+    "gh-pages": "^4.0.0",
     "prettier": "^2.6.2"
-  }
+  },
+  "homepage": "https://choi-k-rock.github.io/todo_typescript/"
 }

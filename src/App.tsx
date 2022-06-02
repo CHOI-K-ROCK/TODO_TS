@@ -5,6 +5,7 @@ import reset from 'styled-reset';
 
 import TodoList from 'components/TodoList';
 import MenuBar from 'components/MenuBar';
+import Memory from 'components/Memory';
 
 const GlobalStyles = createGlobalStyle`
     ${reset}
@@ -91,10 +92,7 @@ function App(): JSX.Element {
             path="todo"
             element={<TodoList todoList={todoList} setTodoList={setTodoList} />}
           />
-          <Route
-            path="memory"
-            element={<TodoList todoList={todoList} setTodoList={setTodoList} />}
-          />
+          <Route path="memory" element={<Memory />} />
         </Routes>
       </InnerContainer>
     </Container>
