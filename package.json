@@ -67,6 +67,5 @@
     "eslint-plugin-react-hooks": "^4.5.0",
     "gh-pages": "^4.0.0",
     "prettier": "^2.6.2"
-  },
-  "homepage": "https://choi-k-rock.github.io/todo_typescript/"
+  }
 }

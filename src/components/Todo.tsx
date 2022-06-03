@@ -43,7 +43,7 @@ const Container = styled.li`
   }
 
   .edit_input {
-    width: 90%;
+    width: 80%;
     box-sizing: border-box;
 
     font-size: 1rem;
@@ -120,9 +120,10 @@ function Todo({ content, id, todoList, setTodoList }: IProps): JSX.Element {
   const editInput = useRef<HTMLInputElement>(null);
 
   const [toggleEdit, setToggleEdit] = useState<boolean>(false);
-  const [editValue, setEditValue] = useState<string>(content.content);
+  const [editValue, setEditValue] = useState<string>('');
   // 최초값으로 현재 값을 저장하고 있다가, 수정을 누르게 되면 값이 바뀜.
   const deleteTodo = () => {
+    setEditValue(content.content);
     setTodoList(
       todoList.filter((todo) => {
         return todo.id !== id;
@@ -144,9 +145,13 @@ function Todo({ content, id, todoList, setTodoList }: IProps): JSX.Element {
   }, [toggleEdit]);
 
   const completeEdit = () => {
-    Object.assign(content, { content: editValue });
-    setToggleEdit(false);
-    setTodoList([...todoList]);
+    if (!editValue) {
+      setToggleEdit(false);
+    } else {
+      Object.assign(content, { content: editValue });
+      setToggleEdit(false);
+      setTodoList([...todoList]);
+    }
   };
 
   return (
@@ -185,17 +190,16 @@ function Todo({ content, id, todoList, setTodoList }: IProps): JSX.Element {
         // 수정 토글 시 표시될 부분
         <>
           <input
-            value={editValue}
+            placeholder={content.content}
             className="edit_input"
             ref={editInput}
             onChange={(e) => setEditValue(e.target.value)}
-            onBlur={completeEdit}
           />
           <div className="buttonWrap">
             <button
               type="button"
               className="done"
-              title="완료로 표시"
+              title="수정완료"
               onClick={completeEdit}
             >
               <BsCheck />

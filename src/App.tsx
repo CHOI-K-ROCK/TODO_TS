@@ -13,6 +13,10 @@ const GlobalStyles = createGlobalStyle`
     body * {
       font-family: 'NanumSquareRound';
     }
+
+    a {
+      color: #000;
+    }
   `;
 
 const Container = styled.div`
