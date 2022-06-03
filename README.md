@@ -11,6 +11,8 @@
 
 - TS 와 React, Styled-Components 를 이용하여 제작하고 있습니다.
 
+- 상태관리를 위해 Redux 를 적용시킬 예정입니다.
+
 
 ### Try it
 
