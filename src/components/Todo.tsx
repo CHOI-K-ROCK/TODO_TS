@@ -7,6 +7,8 @@ import React, {
 } from 'react';
 import styled from 'styled-components';
 import { BsPencilFill, BsCheck, BsDash } from 'react-icons/bs';
+import { todosActions } from 'modules/todos';
+import { useDispatch } from 'react-redux';
 
 const Container = styled.li`
   display: flex;
@@ -117,11 +119,12 @@ interface IProps {
 // ReduxToolkit 보단 일반 Redux 먼저 사용해보기!
 
 function Todo({ content, id, todoList, setTodoList }: IProps): JSX.Element {
+  const dispatch = useDispatch();
   const editInput = useRef<HTMLInputElement>(null);
 
   const [toggleEdit, setToggleEdit] = useState<boolean>(false);
   const [editValue, setEditValue] = useState<string>('');
-  // 최초값으로 현재 값을 저장하고 있다가, 수정을 누르게 되면 값이 바뀜.
+
   const deleteTodo = () => {
     setEditValue(content.content);
     setTodoList(
@@ -133,9 +136,9 @@ function Todo({ content, id, todoList, setTodoList }: IProps): JSX.Element {
 
   const completeTodo = () => {
     // Object.assign(content, { done: true });
-    const todo = content;
-    todo.done = true;
-    setTodoList([...todoList]);
+    // const todo = content;
+    // todo.done = true;
+    dispatch(todosActions.doneTodo({ id }));
   };
 
   useEffect(() => {

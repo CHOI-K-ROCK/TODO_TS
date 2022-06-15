@@ -7,13 +7,11 @@ const Container = styled.section`
   font-size: 2rem;
   width: 100%;
   height: 500px;
-
-  .charWrapper {
-    display: flex;
-  }
 `;
 
 const Char = styled.div<{ idx: number }>`
+  display: inline-block;
+
   letter-spacing: 3px;
   animation: wave 1s calc(0.1s * ${(props) => props.idx}) linear infinite;
 

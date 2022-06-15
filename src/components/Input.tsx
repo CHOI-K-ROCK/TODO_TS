@@ -1,8 +1,10 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import styled from 'styled-components';
-import { v4 as uuidv4 } from 'uuid';
+import { useDispatch } from 'react-redux';
 
+import { v4 as uuidv4 } from 'uuid';
 import { BsPlus } from 'react-icons/bs';
+import { todosActions } from '../modules/todos';
 
 const Container = styled.section`
   position: relative;
@@ -63,6 +65,7 @@ interface IProps {
 }
 
 function Input({ todoList, setTodoList }: IProps): JSX.Element {
+  const dispatch = useDispatch();
   const [inputValue, setInputValue] = useState<string>('');
 
   const addTodo = (
@@ -73,10 +76,15 @@ function Input({ todoList, setTodoList }: IProps): JSX.Element {
     e.preventDefault();
 
     if (!inputValue) return;
-    setTodoList([
-      ...todoList,
-      { id: `${uuidv4()}`, done: false, content: inputValue },
-    ]);
+
+    dispatch(
+      todosActions.addTodo({
+        id: `${uuidv4()}`,
+        done: false,
+        content: inputValue,
+      })
+    );
+    // setTodoList([...todoList, ,]);
     setInputValue('');
   };
 

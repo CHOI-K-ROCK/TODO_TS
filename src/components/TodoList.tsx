@@ -2,6 +2,7 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 import { BsFillTrashFill } from 'react-icons/bs';
+import { useSelector } from 'react-redux';
 import Done from './Done';
 import Todo from './Todo';
 import Input from './Input';
@@ -107,8 +108,14 @@ interface IProps {
 }
 
 function TodoList({ todoList, setTodoList }: IProps): JSX.Element {
-  const todos: ITodo[] = todoList.filter((todo) => !todo.done);
-  const dones: ITodo[] = todoList.filter((todo) => todo.done);
+  const todoSlice = useSelector(
+    (state: { todosSlice: { todos: ITodo[] } }) => state.todosSlice.todos
+  );
+
+  console.log(todoSlice);
+
+  const todos: ITodo[] = todoSlice.filter((todo) => !todo.done);
+  const dones: ITodo[] = todoSlice.filter((todo) => todo.done);
 
   const clearDoneList = () => {
     setTodoList(
