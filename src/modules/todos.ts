@@ -31,15 +31,27 @@ const todosSlice = createSlice({
         },
       ];
     },
-    doneTodo(state: { todos: ITodo[] }, action: { payload: { id: string } }) {
-      state.todos = [...state.todos];
-    },
+    // 완료 상태 변셩
+    toggleTodoStatus(
+      state: { todos: ITodo[] },
+      action: { payload: { id: string } }
+    ) {
+      const idx = state.todos.findIndex(
+        (todo: ITodo) => todo.id === action.payload.id
+      );
 
+      state.todos[idx].done = !state.todos[idx].done;
+    },
     // 삭제
+    deleteTodo(state: { todos: ITodo[] }, action: { payload: { id: string } }) {
+      state.todos = state.todos.filter((todo) => todo.id !== action.payload.id);
+    },
     // 수정
-    // 완료 되돌리기
-    // 완료 삭제
-    // 완료 전체 삭제
+
+    // 완료목록 전체 삭제
+    clearDoneList(state: { todos: ITodo[] }) {
+      state.todos = state.todos.filter((todo) => !todo.done);
+    },
   },
 });
 

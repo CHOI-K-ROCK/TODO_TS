@@ -126,19 +126,11 @@ function Todo({ content, id, todoList, setTodoList }: IProps): JSX.Element {
   const [editValue, setEditValue] = useState<string>('');
 
   const deleteTodo = () => {
-    setEditValue(content.content);
-    setTodoList(
-      todoList.filter((todo) => {
-        return todo.id !== id;
-      })
-    );
+    dispatch(todosActions.deleteTodo({ id }));
   };
 
   const completeTodo = () => {
-    // Object.assign(content, { done: true });
-    // const todo = content;
-    // todo.done = true;
-    dispatch(todosActions.doneTodo({ id }));
+    dispatch(todosActions.toggleTodoStatus({ id }));
   };
 
   useEffect(() => {

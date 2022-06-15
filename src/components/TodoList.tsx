@@ -2,7 +2,9 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 import { BsFillTrashFill } from 'react-icons/bs';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { todosActions } from 'modules/todos';
+
 import Done from './Done';
 import Todo from './Todo';
 import Input from './Input';
@@ -108,6 +110,7 @@ interface IProps {
 }
 
 function TodoList({ todoList, setTodoList }: IProps): JSX.Element {
+  const dispatch = useDispatch();
   const todoSlice = useSelector(
     (state: { todosSlice: { todos: ITodo[] } }) => state.todosSlice.todos
   );
@@ -161,7 +164,7 @@ function TodoList({ todoList, setTodoList }: IProps): JSX.Element {
               className="deleteAll"
               role="button"
               tabIndex={0}
-              onClick={() => clearDoneList()}
+              onClick={() => dispatch(todosActions.clearDoneList())}
             >
               <BsFillTrashFill />
             </div>
