@@ -115,18 +115,8 @@ function TodoList({ todoList, setTodoList }: IProps): JSX.Element {
     (state: { todosSlice: { todos: ITodo[] } }) => state.todosSlice.todos
   );
 
-  console.log(todoSlice);
-
   const todos: ITodo[] = todoSlice.filter((todo) => !todo.done);
   const dones: ITodo[] = todoSlice.filter((todo) => todo.done);
-
-  const clearDoneList = () => {
-    setTodoList(
-      todoList.filter((todo) => {
-        return todo.done === false;
-      })
-    );
-  };
 
   return (
     <Container>

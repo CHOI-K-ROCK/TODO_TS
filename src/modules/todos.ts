@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import { createSlice, current } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 interface ITodo {
   id: string;
@@ -17,7 +17,7 @@ const todosSlice = createSlice({
   reducers: {
     // 로컬 스토리지 가져오기
     getLocalStorage(state: { todos: ITodo[] }) {
-      const localData = window.localStorage.getItem('data') as string;
+      const localData = window.localStorage.getItem('todosData') as string;
       state.todos = JSON.parse(localData);
     },
     // 추가
@@ -31,7 +31,7 @@ const todosSlice = createSlice({
         },
       ];
     },
-    // 완료 상태 변셩
+    // 완료 상태 토글
     toggleTodoStatus(
       state: { todos: ITodo[] },
       action: { payload: { id: string } }
@@ -47,6 +47,15 @@ const todosSlice = createSlice({
       state.todos = state.todos.filter((todo) => todo.id !== action.payload.id);
     },
     // 수정
+    editTodo(
+      state: { todos: ITodo[] },
+      action: { payload: { id: string; content: string } }
+    ) {
+      const idx = state.todos.findIndex(
+        (todo: ITodo) => todo.id === action.payload.id
+      );
+      state.todos[idx].content = action.payload.content;
+    },
 
     // 완료목록 전체 삭제
     clearDoneList(state: { todos: ITodo[] }) {
@@ -57,5 +66,3 @@ const todosSlice = createSlice({
 
 export const todosActions = todosSlice.actions;
 export default todosSlice.reducer;
-
-console.log(todosSlice);

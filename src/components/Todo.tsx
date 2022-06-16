@@ -143,9 +143,8 @@ function Todo({ content, id, todoList, setTodoList }: IProps): JSX.Element {
     if (!editValue) {
       setToggleEdit(false);
     } else {
-      Object.assign(content, { content: editValue });
+      dispatch(todosActions.editTodo({ id, content: editValue }));
       setToggleEdit(false);
-      setTodoList([...todoList]);
     }
   };
 
