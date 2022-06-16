@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 
 import { v4 as uuidv4 } from 'uuid';
 import { BsPlus } from 'react-icons/bs';
-import { todosActions } from '../modules/todos';
+import { todosActions } from '../../modules/todos';
 
 const Container = styled.section`
   position: relative;
