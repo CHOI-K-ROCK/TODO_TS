@@ -7,17 +7,17 @@ import ListItem from './ListItem';
 import Viewer from './Viewer';
 
 const Container = styled.section`
-  display: grid;
-  grid-template-columns: 3.5fr 6.5fr;
+  display: flex;
 
   width: 100%;
-  background-color: #ddd;
 
   .lists {
-    border: 1px solid;
+    width: 35%;
   }
 
   .contents {
+    width: 75%;
+    box-sizing: border-box;
     border: 1px solid;
   }
 `;
@@ -25,7 +25,7 @@ const Container = styled.section`
 interface INote {
   id: string;
   title: string;
-  keywords: string[];
+  keywords?: string[];
   content: string;
 }
 
@@ -33,7 +33,7 @@ function Memory(): JSX.Element {
   const notesSlice = useSelector(
     (state: { notesSlice: { notes: INote[] } }) => state.notesSlice.notes
   );
-
+  const [openAdd, setOpenAdd] = useState<boolean>(false);
   const [currentNote, setCurrentNote] = useState<INote>({
     id: '',
     title: '',
@@ -41,20 +41,26 @@ function Memory(): JSX.Element {
     content: '',
   });
 
+  const toggleAdd = () => {
+    setOpenAdd(!openAdd);
+  };
+
   return (
     <Container>
       <ul className="lists">
         {notesSlice.map((note, idx) => {
           return (
             // eslint-disable-next-line react/no-array-index-key
-            <ListItem key={idx} note={note} />
+            <ListItem key={idx} note={note} setCurrentNote={setCurrentNote} />
           );
         })}
       </ul>
       <div className="contents">
-        <Viewer note={currentNote} setCurrentNote={setCurrentNote} />
+        <button type="button" onClick={toggleAdd}>
+          addNote
+        </button>
+        {openAdd ? <AddNote /> : <Viewer note={currentNote} />}
       </div>
-      <AddNote />
     </Container>
   );
 }

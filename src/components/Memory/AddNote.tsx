@@ -10,11 +10,21 @@ function AddNote(): JSX.Element {
   const dispatch = useDispatch();
 
   const [title, setTitle] = useState<string>('');
-  const [keywords, setKeywords] = useState<string[]>([]);
+  const [keywords, setKeywords] = useState<string | null>(null);
+  // 키워드는 추가 할 수도, 안 할 수도 있음
   const [content, setContent] = useState<string>('');
 
   const addNote = () => {
-    dispatch(notesActions.addNote({ id: uuidv4(), title, keywords, content }));
+    const keywordsArr = keywords?.split(',');
+    // 옵셔널 체이닝으로 키워드가 있는 경우에만.
+    dispatch(
+      notesActions.addNote({
+        id: uuidv4(),
+        title,
+        keywords: keywordsArr,
+        content,
+      })
+    );
   };
 
   return (
@@ -30,7 +40,7 @@ function AddNote(): JSX.Element {
       <input
         type="text"
         className="tag_input"
-        // onChange={(e) => setKeywords(e.target.value)}
+        onChange={(e) => setKeywords(e.target.value)}
       />
       <h3>본문</h3>
       <textarea
