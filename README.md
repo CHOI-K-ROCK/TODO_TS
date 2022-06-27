@@ -9,13 +9,13 @@
 
 ### Stack
 
-- TS 와 React, Styled-Components 를 이용하여 제작하고 있습니다.
+- `TS` 와 `React`, `Styled-Components` 를 이용하여 제작하고 있습니다.
 
-- 상태관리를 위해 Redux 를 적용시킬 예정입니다.
+- `ReduxToolkit` 을 사용하여 상태관리 되고 있습니다.
 
 
 ### Try it
 
-- 해당 프로젝트는 현재 AWS S3 을 통해 배포되고 있습니다.
+- 해당 프로젝트의 main 브랜치는 현재 AWS S3 을 통해 배포되고 있습니다.
 
 - [배포링크](http://memory-todo.s3-website.ap-northeast-2.amazonaws.com/todo)
