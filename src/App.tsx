@@ -3,15 +3,23 @@ import { Routes, Route, useNavigate } from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
 import reset from 'styled-reset';
 
-import TodoList from 'components/TodoList';
+import { useDispatch, useSelector } from 'react-redux';
+import { todosActions } from 'modules/todos';
+
 import MenuBar from 'components/MenuBar';
-import Memory from 'components/Memory';
+import TodoList from 'components/Todo/TodoList';
+import Memory from 'components/Memory/Memory';
+import { notesActions } from 'modules/memory';
 
 const GlobalStyles = createGlobalStyle`
     ${reset}
 
     body * {
       font-family: 'NanumSquareRound';
+    }
+
+    a {
+      color: #000;
     }
   `;
 
@@ -56,6 +64,13 @@ interface ITodo {
   content: string;
 }
 
+interface INote {
+  id: string;
+  title: string;
+  tags: string[];
+  content: string;
+}
+
 function App(): JSX.Element {
   const nav = useNavigate();
   const [todoList, setTodoList] = useState<ITodo[]>([]);
@@ -64,16 +79,34 @@ function App(): JSX.Element {
   // >([]);
 
   // Redux 적용 예정이지만 일단 기본적인 내용은 전부 완성 뒤에 적용시키기!
+  const todoSlice = useSelector(
+    (state: { todosSlice: { todos: ITodo[] } }) => state.todosSlice.todos
+  );
+
+  const notesSlice = useSelector(
+    (state: { notesSlice: { notes: INote[] } }) => state.notesSlice.notes
+  );
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    const data: string | null = window.localStorage.getItem('data');
-    if (data) setTodoList(JSON.parse(data));
+    const todosData: string | null = window.localStorage.getItem('todosData');
+    const notesData: string | null = window.localStorage.getItem('notesData');
+
+    if (todosData) dispatch(todosActions.getLocalStorage());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    if (notesData) dispatch(notesActions.getLocalStorage());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   // 페이지를 불러 올 때 데이터가 있는 경우 todoList 의 값을 해당 JSON 을 객체로 파싱한 값으로 갱신한다.
 
   useEffect(() => {
-    window.localStorage.setItem('data', JSON.stringify(todoList));
-  }, [todoList]);
+    window.localStorage.setItem('todosData', JSON.stringify(todoSlice));
+  }, [todoSlice]);
+
+  useEffect(() => {
+    window.localStorage.setItem('notesData', JSON.stringify(notesSlice));
+  }, [notesSlice]);
   // 상태가 변경될 때 해당 내용을 로컬 스토리지에 저장한다.
   // 위 두 Effect Hook 으로 인해 서버없이도 브라우저에 저장된다.
 

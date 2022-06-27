@@ -1,17 +1,33 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter as Router } from 'react-router-dom';
-import './index.css';
+import { Provider } from 'react-redux';
+import { configureStore } from '@reduxjs/toolkit';
+
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+
+import todosSlice from './modules/todos';
+import notesSlice from './modules/memory';
+
+const store = configureStore({
+  reducer: {
+    todosSlice,
+    notesSlice,
+  },
+});
+
+console.log(store.getState());
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
-  <Router>
-    <App />
-  </Router>
+  <Provider store={store}>
+    <Router>
+      <App />
+    </Router>
+  </Provider>
 );
 
 reportWebVitals();

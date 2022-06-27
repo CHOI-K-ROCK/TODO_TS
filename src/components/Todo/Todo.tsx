@@ -7,6 +7,8 @@ import React, {
 } from 'react';
 import styled from 'styled-components';
 import { BsPencilFill, BsCheck, BsDash } from 'react-icons/bs';
+import { todosActions } from 'modules/todos';
+import { useDispatch } from 'react-redux';
 
 const Container = styled.li`
   display: flex;
@@ -43,7 +45,7 @@ const Container = styled.li`
   }
 
   .edit_input {
-    width: 90%;
+    width: 80%;
     box-sizing: border-box;
 
     font-size: 1rem;
@@ -117,24 +119,18 @@ interface IProps {
 // ReduxToolkit 보단 일반 Redux 먼저 사용해보기!
 
 function Todo({ content, id, todoList, setTodoList }: IProps): JSX.Element {
+  const dispatch = useDispatch();
   const editInput = useRef<HTMLInputElement>(null);
 
   const [toggleEdit, setToggleEdit] = useState<boolean>(false);
-  const [editValue, setEditValue] = useState<string>(content.content);
-  // 최초값으로 현재 값을 저장하고 있다가, 수정을 누르게 되면 값이 바뀜.
+  const [editValue, setEditValue] = useState<string>('');
+
   const deleteTodo = () => {
-    setTodoList(
-      todoList.filter((todo) => {
-        return todo.id !== id;
-      })
-    );
+    dispatch(todosActions.deleteTodo({ id }));
   };
 
   const completeTodo = () => {
-    // Object.assign(content, { done: true });
-    const todo = content;
-    todo.done = true;
-    setTodoList([...todoList]);
+    dispatch(todosActions.toggleTodoStatus({ id }));
   };
 
   useEffect(() => {
@@ -144,9 +140,12 @@ function Todo({ content, id, todoList, setTodoList }: IProps): JSX.Element {
   }, [toggleEdit]);
 
   const completeEdit = () => {
-    Object.assign(content, { content: editValue });
-    setToggleEdit(false);
-    setTodoList([...todoList]);
+    if (!editValue) {
+      setToggleEdit(false);
+    } else {
+      dispatch(todosActions.editTodo({ id, content: editValue }));
+      setToggleEdit(false);
+    }
   };
 
   return (
@@ -185,17 +184,16 @@ function Todo({ content, id, todoList, setTodoList }: IProps): JSX.Element {
         // 수정 토글 시 표시될 부분
         <>
           <input
-            value={editValue}
+            placeholder={content.content}
             className="edit_input"
             ref={editInput}
             onChange={(e) => setEditValue(e.target.value)}
-            onBlur={completeEdit}
           />
           <div className="buttonWrap">
             <button
               type="button"
               className="done"
-              title="완료로 표시"
+              title="수정완료"
               onClick={completeEdit}
             >
               <BsCheck />

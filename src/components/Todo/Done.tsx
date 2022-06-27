@@ -1,6 +1,8 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 import { BsDash, BsArrowCounterclockwise } from 'react-icons/bs';
+import { useDispatch } from 'react-redux';
+import { todosActions } from 'modules/todos';
 
 const Container = styled.li`
   display: flex;
@@ -100,18 +102,15 @@ interface IProps {
 // ReduxToolkit 보단 일반 Redux 먼저 사용해보기!
 
 function Done({ content, id, todoList, setTodoList }: IProps): JSX.Element {
+  const dispatch = useDispatch();
   const deleteDone = () => {
-    setTodoList(
-      todoList.filter((done) => {
-        return id !== done.id;
-      })
-    );
+    dispatch(todosActions.deleteTodo({ id }));
   };
 
   const undo = () => {
-    Object.assign(content, { done: false });
-    setTodoList([...todoList]);
+    dispatch(todosActions.toggleTodoStatus({ id }));
   };
+
   return (
     <Container>
       <p>{content.content}</p>
