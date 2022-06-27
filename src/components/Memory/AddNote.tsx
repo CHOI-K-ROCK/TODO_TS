@@ -1,34 +1,183 @@
 import { notesActions } from 'modules/memory';
-import React, { useRef, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
 
-const Container = styled.section``;
-
-const KeywordsWrapper = styled.div`
+const Container = styled.section`
+  position: relative;
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+  flex-direction: column;
+  justify-content: center;
 
-  margin-bottom: 12px;
+  padding: 30px;
 
-  .keyword {
-    font-size: 0.8rem;
+  .close_btn {
+    display: grid;
+    place-items: center;
+    padding: 3px 0;
 
-    min-width: 30px;
-    width: max-content;
-    padding: 5px 7px;
+    width: 30px;
+    height: 30px;
 
-    text-align: center;
-    background-color: #fff;
-    border-radius: 100vmax;
+    position: absolute;
+    top: 30px;
+    right: 30px;
 
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+    background: none;
+    border: none;
+
+    font-size: 1.5rem;
+
+    cursor: pointer;
+
+    transition: 0.1s;
+
+    &:hover {
+      border-radius: 100vmax;
+      background-color: #000;
+      color: #fff;
+      font-weight: bold;
+    }
   }
 `;
 
-function AddNote(): JSX.Element {
+const Title = styled.h2`
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+`;
+
+const NoteTitleWrapper = styled.div`
+  margin-bottom: 20px;
+
+  .title_input {
+    width: 100%;
+    height: 30px;
+
+    border: none;
+    outline: none;
+
+    box-sizing: border-box;
+
+    font-size: 1.2rem;
+  }
+`;
+
+const KeywordsWrapper = styled.div`
+  margin-bottom: 10px;
+
+  .keywords_wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+
+    margin-bottom: 12px;
+
+    .keyword_input {
+      font-size: 1rem;
+
+      border: none;
+      outline: none;
+    }
+
+    .keyword {
+      font-size: 0.9rem;
+      position: relative;
+      min-width: 30px;
+      width: max-content;
+      padding: 5px 7px;
+
+      text-align: center;
+      background-color: #fff;
+      border-radius: 100vmax;
+
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+
+      user-select: none;
+
+      overflow: hidden;
+
+      cursor: pointer;
+
+      &:hover::before {
+        content: '✕';
+        line-height: 26px;
+        position: absolute;
+        top: 0;
+        left: 0;
+
+        display: block;
+
+        width: 100%;
+        height: 100%;
+
+        background-color: #ffb9b9;
+
+        animation: appear 0.1s linear;
+
+        @keyframes appear {
+          0% {
+            opacity: 0;
+          }
+
+          100% {
+            opacity: 1;
+          }
+        }
+      }
+    }
+  }
+`;
+
+const ContentWrapper = styled.div`
+  margin-bottom: 10px;
+  .content_input {
+    width: 100%;
+    height: 400px;
+
+    box-sizing: border-box;
+    padding: 10px;
+
+    resize: none;
+
+    border: 2px solid #ddd;
+    border-radius: 5px;
+
+    font-size: 1rem;
+
+    &:focus {
+      outline: none;
+      border: 2px solid #000;
+    }
+  }
+`;
+
+const AddBtn = styled.button`
+  padding: 5px 0;
+
+  background: none;
+  border: 2px solid #ddd;
+  border-radius: 100vmax;
+
+  font-size: 1rem;
+
+  cursor: pointer;
+
+  transition: 0.1s;
+
+  &:hover {
+    background-color: #000;
+    color: #fff;
+    border: 2px solid #000;
+  }
+`;
+
+function AddNote({
+  setOpenAdd,
+}: {
+  setOpenAdd: React.Dispatch<React.SetStateAction<boolean>>;
+}): JSX.Element {
   const dispatch = useDispatch();
 
   const [title, setTitle] = useState<string>('');
@@ -38,7 +187,7 @@ function AddNote(): JSX.Element {
 
   const addKeyword = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (
-      keywords &&
+      keywordValue &&
       !keywords.includes(keywordValue) &&
       e.key === 'Enter' &&
       e.nativeEvent.isComposing === false
@@ -73,54 +222,67 @@ function AddNote(): JSX.Element {
 
   return (
     <Container>
-      <h2>노트 추가하기</h2>
-
-      {/* 제목 입력 */}
-      <h3>제목</h3>
-      <input
-        type="text"
-        className="title_input"
-        onChange={(e) => setTitle(e.target.value)}
-      />
-
-      {/* 키워드 */}
-      <h3>키워드 입력</h3>
-      <KeywordsWrapper>
-        {/* 키워드 표시 */}
-        {keywords?.map((keyword) => {
-          return (
-            <div
-              className="keyword"
-              role="button"
-              key={uuidv4()}
-              aria-hidden="true"
-              onClick={(e) => deleteKeyword(e)}
-            >
-              {keyword}
-            </div>
-          );
-        })}
-        {/* 키워드 입력 */}
+      <Title>노트 추가하기</Title>
+      <button
+        type="button"
+        className="close_btn"
+        onClick={() => setOpenAdd(false)}
+      >
+        ✕
+      </button>
+      {/* 제목 */}
+      <NoteTitleWrapper>
         <input
           type="text"
-          className="tag_input"
-          value={keywordValue}
-          onChange={(e) => setKeywordValue(e.currentTarget.value)}
-          onKeyDown={(e) => addKeyword(e)}
+          className="title_input"
+          placeholder="제목을 입력하세요"
+          spellCheck={false}
+          onChange={(e) => setTitle(e.target.value)}
         />
+      </NoteTitleWrapper>
+      {/* 키워드 */}
+      <KeywordsWrapper>
+        {/* <h3>키워드 입력</h3> */}
+        {/* 키워드 표시 */}
+        <div className="keywords_wrapper">
+          {keywords?.map((keyword) => {
+            return (
+              <div
+                className="keyword"
+                role="button"
+                key={uuidv4()}
+                aria-hidden="true"
+                onClick={(e) => deleteKeyword(e)}
+              >
+                {keyword}
+              </div>
+            );
+          })}
+          {/* 키워드 입력 */}
+          <input
+            type="text"
+            className="keyword_input"
+            spellCheck={false}
+            placeholder="키워드를 입력하세요"
+            value={keywordValue}
+            onChange={(e) => setKeywordValue(e.currentTarget.value)}
+            onKeyDown={(e) => addKeyword(e)}
+          />
+        </div>
       </KeywordsWrapper>
-
-      {/* 본문 작성 */}
-      <h3>본문</h3>
-      <textarea
-        className="content_input"
-        onChange={(e) => setContent(e.target.value)}
-      />
-
+      {/* 본문 */}
+      <ContentWrapper>
+        <textarea
+          placeholder="내용을 작성해주세요."
+          className="content_input"
+          spellCheck={false}
+          onChange={(e) => setContent(e.target.value)}
+        />
+      </ContentWrapper>
       {/* 노트 추가 버튼 */}
-      <button type="button" onClick={addNote}>
-        추가하기
-      </button>
+      <AddBtn type="button" onClick={addNote}>
+        작성완료
+      </AddBtn>
     </Container>
   );
 }

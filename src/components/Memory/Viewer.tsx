@@ -4,6 +4,8 @@ import styled from 'styled-components';
 const Container = styled.section`
   height: 100%;
 
+  padding: 30px;
+
   .content {
     white-space: pre-wrap;
   }

@@ -19,15 +19,42 @@ const FunctionBar = styled.div`
 
 const ContentsWrapper = styled.div`
   display: flex;
+  gap: 10px;
 
   .lists {
-    width: 35%;
+    flex: 1 0;
+
+    min-width: 300px;
+    min-height: 600px;
+    height: max-content;
   }
 
   .contents {
-    width: 75%;
+    flex: 2 0;
+
+    min-width: 400px;
+    min-height: 600px;
+    height: max-content;
     box-sizing: border-box;
-    border: 1px solid;
+
+    border: 1px solid #eee;
+
+    border-radius: 5px;
+    box-shadow: 0 3px 3px rgba(0, 0, 0, 0.2);
+
+    animation: rise 0.3s;
+
+    @keyframes rise {
+      0% {
+        opacity: 0;
+        transform: translateY(5px);
+      }
+
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
   }
 `;
 
@@ -76,7 +103,11 @@ function Memory(): JSX.Element {
           })}
         </ul>
         <div className="contents">
-          {openAdd ? <AddNote /> : <Viewer note={currentNote} />}
+          {openAdd ? (
+            <AddNote setOpenAdd={setOpenAdd} />
+          ) : (
+            <Viewer note={currentNote} />
+          )}
         </div>
       </ContentsWrapper>
     </Container>
