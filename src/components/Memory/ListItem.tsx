@@ -52,12 +52,16 @@ const Item = styled.li`
   }
 
   .content {
+    width: 100%;
+
+    font-size: 0.9rem;
     overflow: hidden;
     text-overflow: ellipsis;
+    white-space: pre-wrap;
 
     display: -webkit-box;
-    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
 
     // 두 줄 이상인 경우에 말줄임을 사용한다.
     // 위의 세 속성을 모두 사용해야함.
@@ -89,30 +93,33 @@ const KeywordsWrapper = styled.div`
 interface INote {
   id: string;
   title: string;
-  keywords?: string[];
+  keywords: string[] | null;
   content: string;
 }
 
 function ListItem({
   note,
   setCurrentNote,
+  setOpenAdd,
 }: {
   note: INote;
   setCurrentNote: React.Dispatch<React.SetStateAction<INote>>;
+  setOpenAdd: React.Dispatch<React.SetStateAction<boolean>>;
 }): JSX.Element {
   const { id, title, keywords, content } = note;
 
+  const listClickHandler = () => {
+    setCurrentNote({
+      id,
+      title,
+      keywords,
+      content,
+    });
+    setOpenAdd(false);
+  };
+
   return (
-    <Item
-      onClick={() =>
-        setCurrentNote({
-          id,
-          title,
-          keywords,
-          content,
-        })
-      }
-    >
+    <Item onClick={listClickHandler}>
       <div className="title">{title}</div>
       <KeywordsWrapper>
         {keywords?.map((el, idx) => {
@@ -124,7 +131,7 @@ function ListItem({
           );
         })}
       </KeywordsWrapper>
-      <div className="content">{content}</div>
+      <pre className="content">{content}</pre>
     </Item>
   );
 }

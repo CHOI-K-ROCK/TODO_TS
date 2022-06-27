@@ -4,7 +4,7 @@ import { createSlice } from '@reduxjs/toolkit';
 interface INote {
   id: string;
   title: string;
-  keywords?: string[];
+  keywords: string[] | null;
   content: string;
 }
 

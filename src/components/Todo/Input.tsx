@@ -9,7 +9,7 @@ import { todosActions } from '../../modules/todos';
 const Container = styled.section`
   position: relative;
   width: 100%;
-  height: 70px;
+  margin-bottom: 30px;
 
   .type_todo {
     width: 100%;

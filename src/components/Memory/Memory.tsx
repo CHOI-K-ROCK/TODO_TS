@@ -7,9 +7,18 @@ import ListItem from './ListItem';
 import Viewer from './Viewer';
 
 const Container = styled.section`
-  display: flex;
-
   width: 100%;
+`;
+
+const FunctionBar = styled.div`
+  background-color: #eee;
+  height: 40px;
+
+  margin-bottom: 30px;
+`;
+
+const ContentsWrapper = styled.div`
+  display: flex;
 
   .lists {
     width: 35%;
@@ -25,7 +34,7 @@ const Container = styled.section`
 interface INote {
   id: string;
   title: string;
-  keywords?: string[];
+  keywords: string[] | null;
   content: string;
 }
 
@@ -47,20 +56,29 @@ function Memory(): JSX.Element {
 
   return (
     <Container>
-      <ul className="lists">
-        {notesSlice.map((note, idx) => {
-          return (
-            // eslint-disable-next-line react/no-array-index-key
-            <ListItem key={idx} note={note} setCurrentNote={setCurrentNote} />
-          );
-        })}
-      </ul>
-      <div className="contents">
+      <FunctionBar>
         <button type="button" onClick={toggleAdd}>
           addNote
         </button>
-        {openAdd ? <AddNote /> : <Viewer note={currentNote} />}
-      </div>
+      </FunctionBar>
+      <ContentsWrapper>
+        <ul className="lists">
+          {notesSlice.map((note, idx) => {
+            return (
+              <ListItem
+                // eslint-disable-next-line react/no-array-index-key
+                key={idx}
+                note={note}
+                setCurrentNote={setCurrentNote}
+                setOpenAdd={setOpenAdd}
+              />
+            );
+          })}
+        </ul>
+        <div className="contents">
+          {openAdd ? <AddNote /> : <Viewer note={currentNote} />}
+        </div>
+      </ContentsWrapper>
     </Container>
   );
 }
