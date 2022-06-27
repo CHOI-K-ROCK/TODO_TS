@@ -5,8 +5,7 @@ import { Link } from 'react-router-dom';
 const Container = styled.section`
   position: relative;
   width: 100%;
-  margin-top: 40px;
-  margin-bottom: 40px;
+  margin: 40px 0;
 
   box-sizing: border-box;
   border: 2px solid #ddd;

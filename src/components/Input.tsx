@@ -4,12 +4,12 @@ import { useDispatch } from 'react-redux';
 
 import { v4 as uuidv4 } from 'uuid';
 import { BsPlus } from 'react-icons/bs';
-import { todosActions } from '../../modules/todos';
+import { todosActions } from '../modules/todos';
 
 const Container = styled.section`
   position: relative;
   width: 100%;
-  margin-bottom: 30px;
+  height: 70px;
 
   .type_todo {
     width: 100%;
