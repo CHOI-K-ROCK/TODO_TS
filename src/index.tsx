@@ -8,10 +8,12 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 import todosSlice from './modules/todos';
+import notesSlice from './modules/memory';
 
 const store = configureStore({
   reducer: {
     todosSlice,
+    notesSlice,
   },
 });
 
