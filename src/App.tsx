@@ -41,7 +41,7 @@ const InnerContainer = styled.section`
   flex-direction: column;
 
   position: relative;
-  top: 20%;
+  top: 200px;
 
   @media screen and (max-width: 750px) {
     width: 80%;
@@ -56,6 +56,13 @@ const Title = styled.section`
   font-size: 3rem;
   text-align: center;
   letter-spacing: 0.1rem;
+`;
+
+const Footer = styled.footer`
+  height: 200px;
+  width: 100vw;
+  margin-top: 30px;
+  border: 1px solid;
 `;
 
 interface ITodo {
@@ -128,6 +135,7 @@ function App(): JSX.Element {
           />
           <Route path="memory" element={<Memory />} />
         </Routes>
+        <Footer />
       </InnerContainer>
     </Container>
   );

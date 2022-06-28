@@ -21,7 +21,7 @@ const Container = styled.section`
     height: 30px;
 
     position: absolute;
-    top: 30px;
+    top: 25px;
     right: 30px;
 
     background: none;
@@ -153,6 +153,17 @@ const ContentWrapper = styled.div`
   }
 `;
 
+const Notification = styled.div`
+  display: flex;
+  justify-content: flex-end;
+
+  width: 100%;
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+
+  color: #777;
+`;
+
 const AddBtn = styled.button`
   padding: 5px 0;
 
@@ -170,6 +181,19 @@ const AddBtn = styled.button`
     background-color: #000;
     color: #fff;
     border: 2px solid #000;
+  }
+`;
+
+const DisabledBtn = styled(AddBtn)`
+  background: #ddd;
+  color: #eee;
+
+  cursor: default;
+
+  &:hover {
+    background: #ddd;
+    color: #eee;
+    border: 2px solid #ddd;
   }
 `;
 
@@ -218,6 +242,7 @@ function AddNote({
         content,
       })
     );
+    setOpenAdd(false);
   };
 
   return (
@@ -279,10 +304,26 @@ function AddNote({
           onChange={(e) => setContent(e.target.value)}
         />
       </ContentWrapper>
+      {/* 작성 필드 안내 */}
+      <Notification>
+        <div className="alert_msg">
+          {!title && !content ? '제목과 내용을 작성해주세요.' : null}
+        </div>
+        <div className="alert_msg">
+          {title && !content ? '내용을 작성해주세요.' : null}
+        </div>
+        <div className="alert_msg">
+          {!title && content ? '제목을 작성해주세요.' : null}
+        </div>
+      </Notification>
       {/* 노트 추가 버튼 */}
-      <AddBtn type="button" onClick={addNote}>
-        작성완료
-      </AddBtn>
+      {title && content ? (
+        <AddBtn type="button" onClick={addNote}>
+          작성완료
+        </AddBtn>
+      ) : (
+        <DisabledBtn>작성완료</DisabledBtn>
+      )}
     </Container>
   );
 }

@@ -93,7 +93,7 @@ const KeywordsWrapper = styled.div`
 interface INote {
   id: string;
   title: string;
-  keywords: string[] | null;
+  keywords: string[];
   content: string;
 }
 
