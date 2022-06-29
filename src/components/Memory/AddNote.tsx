@@ -26,6 +26,7 @@ const Container = styled.section`
 
     background: none;
     border: none;
+    border-radius: 10px;
 
     font-size: 1.5rem;
 
@@ -34,7 +35,6 @@ const Container = styled.section`
     transition: 0.1s;
 
     &:hover {
-      border-radius: 100vmax;
       background-color: #000;
       color: #fff;
       font-weight: bold;
@@ -65,65 +65,80 @@ const NoteTitleWrapper = styled.div`
 `;
 
 const KeywordsWrapper = styled.div`
-  margin-bottom: 10px;
+  position: relative;
 
-  .keywords_wrapper {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
+  min-height: 1.2rem;
+  height: max-content;
 
-    margin-bottom: 12px;
+  margin-bottom: 20px;
 
-    .keyword_input {
-      font-size: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
 
-      border: none;
-      outline: none;
-    }
+  .keyword_input {
+    width: max-content;
+    font-size: 1rem;
 
-    .keyword {
-      font-size: 0.9rem;
-      position: relative;
-      min-width: 30px;
-      width: max-content;
-      padding: 5px 7px;
+    border: none;
+    outline: none;
+  }
 
-      text-align: center;
-      background-color: #fff;
-      border-radius: 100vmax;
+  .notification {
+    position: absolute;
+    bottom: -70px;
+    padding: 10px;
 
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+    color: #fff;
 
-      user-select: none;
+    font-size: 0.8rem;
+    line-height: 20px;
 
-      overflow: hidden;
+    background-color: #000;
+  }
 
-      cursor: pointer;
+  .keyword {
+    font-size: 0.9rem;
+    position: relative;
+    min-width: 30px;
+    width: max-content;
+    padding: 5px 7px;
 
-      &:hover::before {
-        content: '✕';
-        line-height: 26px;
-        position: absolute;
-        top: 0;
-        left: 0;
+    text-align: center;
+    background-color: #fff;
+    border-radius: 100vmax;
 
-        display: block;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
 
-        width: 100%;
-        height: 100%;
+    user-select: none;
 
-        background-color: #ffb9b9;
+    overflow: hidden;
 
-        animation: appear 0.1s linear;
+    cursor: pointer;
 
-        @keyframes appear {
-          0% {
-            opacity: 0;
-          }
+    &:hover::before {
+      content: '✕';
+      line-height: 26px;
+      position: absolute;
+      top: 0;
+      left: 0;
 
-          100% {
-            opacity: 1;
-          }
+      display: block;
+
+      width: 100%;
+      height: 100%;
+
+      background-color: #ffb9b9;
+
+      animation: appear 0.1s linear;
+
+      @keyframes appear {
+        0% {
+          opacity: 0;
+        }
+
+        100% {
+          opacity: 1;
         }
       }
     }
@@ -208,8 +223,10 @@ function AddNote({
   const [keywords, setKeywords] = useState<string[]>([]);
   const [keywordValue, setKeywordValue] = useState<string>('');
   const [content, setContent] = useState<string>('');
+  const [focusOnKeyword, setFocusOnKeyword] = useState<boolean>(false);
 
   const addKeyword = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    console.log(e);
     if (
       keywordValue &&
       !keywords.includes(keywordValue) &&
@@ -269,31 +286,37 @@ function AddNote({
       <KeywordsWrapper>
         {/* <h3>키워드 입력</h3> */}
         {/* 키워드 표시 */}
-        <div className="keywords_wrapper">
-          {keywords?.map((keyword) => {
-            return (
-              <div
-                className="keyword"
-                role="button"
-                key={uuidv4()}
-                aria-hidden="true"
-                onClick={(e) => deleteKeyword(e)}
-              >
-                {keyword}
-              </div>
-            );
-          })}
-          {/* 키워드 입력 */}
-          <input
-            type="text"
-            className="keyword_input"
-            spellCheck={false}
-            placeholder="키워드를 입력하세요"
-            value={keywordValue}
-            onChange={(e) => setKeywordValue(e.currentTarget.value)}
-            onKeyDown={(e) => addKeyword(e)}
-          />
-        </div>
+        {keywords?.map((keyword) => {
+          return (
+            <div
+              className="keyword"
+              role="button"
+              key={uuidv4()}
+              aria-hidden="true"
+              onClick={(e) => deleteKeyword(e)}
+            >
+              {keyword}
+            </div>
+          );
+        })}
+        {/* 키워드 입력 */}
+        <input
+          type="text"
+          className="keyword_input"
+          spellCheck={false}
+          placeholder="키워드를 입력하세요"
+          value={keywordValue}
+          onChange={(e) => setKeywordValue(e.currentTarget.value)}
+          onKeyDown={(e) => addKeyword(e)}
+          onFocus={() => setFocusOnKeyword(true)}
+          onBlur={() => setFocusOnKeyword(false)}
+        />
+        {focusOnKeyword && (
+          <p className="notification">
+            엔터를 눌러 키워드를 추가할 수 있습니다. <br /> 키워드를 클릭하여
+            삭제 할 수 있습니다.{' '}
+          </p>
+        )}
       </KeywordsWrapper>
       {/* 본문 */}
       <ContentWrapper>

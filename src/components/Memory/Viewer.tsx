@@ -1,9 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
+import { BsPen as EditIcon, BsTrash as DeleteIcon } from 'react-icons/bs';
 
 const Container = styled.section`
+  position: relative;
   height: 100%;
-
   padding: 30px;
 
   .content {
@@ -17,6 +18,39 @@ const Title = styled.h2`
   margin-bottom: 20px;
 `;
 
+const BtnWrapper = styled.div`
+  position: absolute;
+  top: 25px;
+  right: 30px;
+
+  display: flex;
+  gap: 5px;
+
+  width: max-content;
+  padding: 3px 0;
+
+  button {
+    display: block;
+    padding-top: 6px;
+
+    background: none;
+    border: none;
+    border-radius: 10px;
+
+    font-size: 1.5rem;
+
+    cursor: pointer;
+
+    transition: 0.1s;
+
+    &:hover {
+      background-color: #000;
+      color: #fff;
+      font-weight: bold;
+    }
+  }
+`;
+
 const KeywordsWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -24,6 +58,7 @@ const KeywordsWrapper = styled.div`
 
   height: 1.2rem;
   margin-bottom: 25px;
+
   .no_keyword {
     font-size: 0.9rem;
     padding: 5px 0;
@@ -82,6 +117,15 @@ function Viewer({ note }: { note: INote }): JSX.Element {
     <Container>
       {/* 제목 */}
       <Title>{title}</Title>
+
+      <BtnWrapper>
+        <button type="button" className="edit">
+          <EditIcon />
+        </button>
+        <button type="button" className="delete">
+          <DeleteIcon />
+        </button>
+      </BtnWrapper>
 
       {/* 키워드 */}
       <KeywordsWrapper>
