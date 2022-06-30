@@ -29,19 +29,19 @@ const Container = styled.div`
   flex-direction: column;
 
   width: 100vw;
-  height: 100vh;
+  height: max-content;
+
+  margin: 200px 0;
 `;
 
 const InnerContainer = styled.section`
   width: 60%;
   max-width: 1000px;
+  height: max-content;
 
   display: flex;
   align-items: center;
   flex-direction: column;
-
-  position: relative;
-  top: 20%;
 
   @media screen and (max-width: 750px) {
     width: 80%;
@@ -56,6 +56,13 @@ const Title = styled.section`
   font-size: 3rem;
   text-align: center;
   letter-spacing: 0.1rem;
+`;
+
+const Footer = styled.footer`
+  height: 200px;
+  width: 100vw;
+  margin-top: 30px;
+  border: 1px solid;
 `;
 
 interface ITodo {
@@ -116,20 +123,25 @@ function App(): JSX.Element {
   }, [nav]);
 
   return (
-    <Container>
-      <GlobalStyles />
-      <InnerContainer>
-        <Title>&lt; memoryTodo /&gt;</Title>
-        <MenuBar />
-        <Routes>
-          <Route
-            path="todo"
-            element={<TodoList todoList={todoList} setTodoList={setTodoList} />}
-          />
-          <Route path="memory" element={<Memory />} />
-        </Routes>
-      </InnerContainer>
-    </Container>
+    <>
+      <Container>
+        <GlobalStyles />
+        <InnerContainer>
+          <Title>&lt; memoryTodo /&gt;</Title>
+          <MenuBar />
+          <Routes>
+            <Route
+              path="todo"
+              element={
+                <TodoList todoList={todoList} setTodoList={setTodoList} />
+              }
+            />
+            <Route path="memory" element={<Memory />} />
+          </Routes>
+        </InnerContainer>
+      </Container>
+      <Footer />
+    </>
   );
 }
 

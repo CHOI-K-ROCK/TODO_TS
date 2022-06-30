@@ -23,9 +23,8 @@ const Container = styled.section`
 
     font-size: 1.1rem;
 
-    outline: none;
-
     &:focus {
+      outline: none;
       border: 2px solid #000;
     }
   }

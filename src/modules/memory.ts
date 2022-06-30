@@ -9,20 +9,7 @@ interface INote {
 }
 
 const initialState = {
-  notes: [
-    {
-      id: '2108fb0-83003h4-23124f4',
-      title: '호이스팅과 TDZ의 상관관계',
-      keywords: ['호이스팅', '실행 컨텍스트', '선언 초기화 할당'],
-      content: '호 이스팅은정말즐거워 상병님!',
-    },
-    {
-      id: '2affsb0-skd20sd03h4-239asg4',
-      title: '자바스크립트의 자료형',
-      keywords: ['원시자료형', '참조자료형'],
-      content: '원시는 콜스택, 참조는 힙메모리',
-    },
-  ],
+  notes: [],
 };
 
 const notesSlice = createSlice({
@@ -43,6 +30,14 @@ const notesSlice = createSlice({
           content: action.payload.content,
         },
       ];
+    },
+    deleteNote(state: { notes: INote[] }, action: { payload: { id: string } }) {
+      state.notes = state.notes.filter((note) => {
+        return note.id !== action.payload.id;
+      });
+    },
+    editNote(state: { notes: INote[] }, action: { payload: INote }) {
+      console.log(action.payload);
     },
   },
 });
