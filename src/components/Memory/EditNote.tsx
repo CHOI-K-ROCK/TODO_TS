@@ -1,8 +1,9 @@
-import { notesActions } from 'modules/memory';
-import React, { useMemo, useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { useDispatch } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
+
+import { notesActions } from 'modules/memory';
 
 const Container = styled.section`
   position: relative;
@@ -77,8 +78,6 @@ const KeywordsWrapper = styled.div`
   gap: 8px;
 
   .keyword_input {
-    display: block;
-    position: relative;
     width: max-content;
     font-size: 1rem;
 
@@ -101,17 +100,6 @@ const KeywordsWrapper = styled.div`
       line-height: 20px;
 
       background-color: #000;
-
-      animation: appear 0.2s linear;
-
-      @keyframes appear {
-        0% {
-          opacity: 0;
-        }
-        100% {
-          opacity: 1;
-        }
-      }
     }
   }
 
@@ -230,10 +218,19 @@ const DisabledBtn = styled(AddBtn)`
   }
 `;
 
-function AddNote({
-  setOpenAdd,
+interface INote {
+  id: string;
+  title: string;
+  keywords: string[];
+  content: string;
+}
+
+function EditNote({
+  setOpenEdit,
+  currentNote,
 }: {
-  setOpenAdd: React.Dispatch<React.SetStateAction<boolean>>;
+  setOpenEdit: React.Dispatch<React.SetStateAction<boolean>>;
+  currentNote: INote;
 }): JSX.Element {
   const dispatch = useDispatch();
 
@@ -241,6 +238,13 @@ function AddNote({
   const [keywords, setKeywords] = useState<string[]>([]);
   const [keywordValue, setKeywordValue] = useState<string>('');
   const [content, setContent] = useState<string>('');
+
+  useEffect(() => {
+    setTitle(currentNote.title);
+    setKeywords(currentNote.keywords);
+    setContent(currentNote.content);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const addKeyword = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (
@@ -266,25 +270,25 @@ function AddNote({
     );
   };
 
-  const addNote = () => {
+  const editNote = () => {
     dispatch(
-      notesActions.addNote({
+      notesActions.editNote({
         id: uuidv4(),
         title,
         keywords,
         content,
       })
     );
-    setOpenAdd(false);
+    setOpenEdit(false);
   };
 
   return (
     <Container>
-      <Title>노트 추가하기</Title>
+      <Title>노트 수정하기</Title>
       <button
         type="button"
         className="close_btn"
-        onClick={() => setOpenAdd(false)}
+        onClick={() => setOpenEdit(false)}
       >
         ✕
       </button>
@@ -293,6 +297,7 @@ function AddNote({
       <NoteTitleWrapper>
         <input
           type="text"
+          value={title}
           className="title_input"
           placeholder="제목을 입력하세요"
           spellCheck={false}
@@ -316,6 +321,7 @@ function AddNote({
             </div>
           );
         })}
+
         {/* 키워드 입력 */}
         <input
           type="text"
@@ -334,6 +340,7 @@ function AddNote({
         <textarea
           placeholder="내용을 작성해주세요."
           className="content_input"
+          value={content}
           spellCheck={false}
           onChange={(e) => setContent(e.target.value)}
         />
@@ -354,14 +361,14 @@ function AddNote({
 
       {/* 노트 추가 버튼 */}
       {title && content ? (
-        <AddBtn type="button" onClick={addNote}>
-          작성완료
+        <AddBtn type="button" onClick={editNote}>
+          수정완료
         </AddBtn>
       ) : (
-        <DisabledBtn>작성완료</DisabledBtn>
+        <DisabledBtn>수정완료</DisabledBtn>
       )}
     </Container>
   );
 }
 
-export default AddNote;
+export default EditNote;

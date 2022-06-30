@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { BsPen as EditIcon, BsTrash as DeleteIcon } from 'react-icons/bs';
+import { useDispatch } from 'react-redux';
+import { notesActions } from 'modules/memory';
 
 const Container = styled.section`
   position: relative;
@@ -80,6 +82,36 @@ const KeywordsWrapper = styled.div`
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
 
     user-select: none;
+
+    cursor: pointer;
+
+    &:hover::after {
+      content: '구글에서 해당 키워드를 검색합니다.';
+      position: absolute;
+      bottom: -30px;
+      left: 0;
+      display: block;
+
+      width: max-content;
+      padding: 5px;
+
+      z-index: 1;
+
+      font-size: 0.8rem;
+      color: #fff;
+      background-color: #000;
+
+      animation: appear 0.2s linear;
+
+      @keyframes appear {
+        0% {
+          opacity: 0;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
+    }
   }
 `;
 
@@ -111,18 +143,39 @@ interface INote {
   content: string;
 }
 
-function Viewer({ note }: { note: INote }): JSX.Element {
+function Viewer({
+  note,
+  toggleEdit,
+}: {
+  note: INote;
+  toggleEdit: () => void;
+}): JSX.Element {
   const { id, title, keywords, content } = note;
+  const dispatch = useDispatch();
+
+  const searchOnGoogle = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    console.dir(e);
+    const target = e.target as HTMLDivElement;
+    window.open(
+      `https://www.google.com/search?q=${target.innerText}`,
+      '_blank'
+    );
+  };
+
   return (
     <Container>
       {/* 제목 */}
       <Title>{title}</Title>
 
       <BtnWrapper>
-        <button type="button" className="edit">
+        <button type="button" className="edit" onClick={toggleEdit}>
           <EditIcon />
         </button>
-        <button type="button" className="delete">
+        <button
+          type="button"
+          className="delete"
+          onClick={() => dispatch(notesActions.deleteNote({ id }))}
+        >
           <DeleteIcon />
         </button>
       </BtnWrapper>
@@ -132,7 +185,12 @@ function Viewer({ note }: { note: INote }): JSX.Element {
         {keywords.length ? (
           keywords.map((keyword) => {
             return (
-              <div className="keyword" key={keyword}>
+              // eslint-disable-next-line jsx-a11y/mouse-events-have-key-events
+              <div
+                className="keyword"
+                key={keyword}
+                onClick={(e) => searchOnGoogle(e)}
+              >
                 {keyword}
               </div>
             );

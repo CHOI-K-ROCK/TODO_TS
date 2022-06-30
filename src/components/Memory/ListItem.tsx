@@ -100,11 +100,13 @@ interface INote {
 function ListItem({
   note,
   setCurrentNote,
-  setOpenAdd,
+  setOpenViewer,
+  closeEditor,
 }: {
   note: INote;
   setCurrentNote: React.Dispatch<React.SetStateAction<INote>>;
-  setOpenAdd: React.Dispatch<React.SetStateAction<boolean>>;
+  setOpenViewer: React.Dispatch<React.SetStateAction<boolean>>;
+  closeEditor: () => void;
 }): JSX.Element {
   const { id, title, keywords, content } = note;
 
@@ -115,7 +117,8 @@ function ListItem({
       keywords,
       content,
     });
-    setOpenAdd(false);
+    setOpenViewer(true);
+    closeEditor();
   };
 
   return (
