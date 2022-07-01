@@ -40,9 +40,9 @@ const IndicatorWrapper = styled.div<{ currentPath: string }>`
     transition: 0.5s;
 
     transform: ${(props) =>
-      props.currentPath === '/todo' && 'translateX(calc(100% * 0))'};
+      props.currentPath === 'todo' && 'translateX(calc(100% * 0))'};
     transform: ${(props) =>
-      props.currentPath === '/memory' && 'translateX(calc(100% * 1))'};
+      props.currentPath === 'memory' && 'translateX(calc(100% * 1))'};
   }
 `;
 
@@ -79,16 +79,16 @@ function MenuBar(): JSX.Element {
   const [currentPath, setCurrentPath] = useState<string>('');
 
   useEffect(() => {
-    setCurrentPath(window.location.pathname);
+    setCurrentPath(window.location.pathname.split('/')[1]);
   }, [currentPath]);
   // 새로고침 혹은 페이지 접속 시 현재 경로를 가져온다.
 
   useEffect(() => {
-    if (currentPath === '/todo') {
+    if (currentPath === 'todo') {
       todoBtn.current?.classList.add('active');
       memoryBtn.current?.classList.remove('active');
     }
-    if (currentPath === '/memory') {
+    if (currentPath === 'memory') {
       memoryBtn.current?.classList.add('active');
       todoBtn.current?.classList.remove('active');
     }
