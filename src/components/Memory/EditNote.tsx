@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 
 import { notesActions } from 'modules/memory';
+import { useNavigate } from 'react-router-dom';
 
 const Container = styled.section`
   position: relative;
@@ -225,14 +226,9 @@ interface INote {
   content: string;
 }
 
-function EditNote({
-  setOpenEdit,
-  currentNote,
-}: {
-  setOpenEdit: React.Dispatch<React.SetStateAction<boolean>>;
-  currentNote: INote;
-}): JSX.Element {
+function EditNote({ currentNote }: { currentNote: INote }): JSX.Element {
   const dispatch = useDispatch();
+  const nav = useNavigate();
 
   const [title, setTitle] = useState<string>('');
   const [keywords, setKeywords] = useState<string[]>([]);
@@ -279,7 +275,7 @@ function EditNote({
         content,
       })
     );
-    setOpenEdit(false);
+    nav('/memory/view');
   };
 
   return (
@@ -288,7 +284,7 @@ function EditNote({
       <button
         type="button"
         className="close_btn"
-        onClick={() => setOpenEdit(false)}
+        onClick={() => nav('/memory/view')}
       >
         ✕
       </button>

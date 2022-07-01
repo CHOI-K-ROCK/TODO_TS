@@ -1,6 +1,7 @@
 import { notesActions } from 'modules/memory';
 import React, { useMemo, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -230,12 +231,9 @@ const DisabledBtn = styled(AddBtn)`
   }
 `;
 
-function AddNote({
-  setOpenAdd,
-}: {
-  setOpenAdd: React.Dispatch<React.SetStateAction<boolean>>;
-}): JSX.Element {
+function AddNote(): JSX.Element {
   const dispatch = useDispatch();
+  const nav = useNavigate();
 
   const [title, setTitle] = useState<string>('');
   const [keywords, setKeywords] = useState<string[]>([]);
@@ -275,7 +273,7 @@ function AddNote({
         content,
       })
     );
-    setOpenAdd(false);
+    nav('/memory/view');
   };
 
   return (
@@ -284,7 +282,7 @@ function AddNote({
       <button
         type="button"
         className="close_btn"
-        onClick={() => setOpenAdd(false)}
+        onClick={() => nav('/memory')}
       >
         ✕
       </button>

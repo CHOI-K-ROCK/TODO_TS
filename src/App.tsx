@@ -136,7 +136,7 @@ function App(): JSX.Element {
                 <TodoList todoList={todoList} setTodoList={setTodoList} />
               }
             />
-            <Route path="memory" element={<Memory />} />
+            <Route path="memory/*" element={<Memory />} />
           </Routes>
         </InnerContainer>
       </Container>
