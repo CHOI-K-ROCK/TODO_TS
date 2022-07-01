@@ -1,8 +1,12 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { Route, Routes, Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+// import { plus as PlusBtn } from 'react-icons/bs';
+
 import AddNote from './AddNote';
+import DefaultPage from './DefaultPage';
 import EditNote from './EditNote';
 import ListItem from './ListItem';
 import Viewer from './Viewer';
@@ -22,15 +26,68 @@ const ContentsWrapper = styled.div`
   display: flex;
   gap: 10px;
 
-  .lists {
+  .list_wrapper {
     flex: 1 0;
 
     min-width: 300px;
     min-height: 600px;
     height: max-content;
+
+    .empty {
+      height: 600px;
+      display: grid;
+      place-items: center;
+
+      .note_not_found {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        color: #777;
+        p {
+          margin-bottom: 20px;
+
+          &:nth-child(2) {
+            font-size: 1rem;
+            margin-bottom: 30px;
+          }
+        }
+      }
+
+      button {
+        position: relative;
+        display: block;
+
+        width: 30px;
+        height: 30px;
+
+        background-color: #ddd;
+
+        border: none;
+        border-radius: 10px;
+
+        cursor: pointer;
+
+        transition: 0.2s;
+
+        span {
+          position: absolute;
+          top: calc(50% + 2px);
+          left: 50%;
+          transform: translate(-50%, -50%);
+
+          font-size: 2rem;
+          color: #fff;
+        }
+
+        &:hover {
+          background-color: #000;
+        }
+      }
+    }
   }
 
-  .contents {
+  .contents_wrapper {
     flex: 2 0;
     min-height: 600px;
     height: max-content;
@@ -55,31 +112,6 @@ const ContentsWrapper = styled.div`
         transform: translateY(0);
       }
     }
-
-    .default_page {
-      display: grid;
-      place-items: center;
-
-      height: 600px;
-
-      font-size: 1.2rem;
-      color: #777;
-
-      .note_not_found {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-
-        p {
-          margin-bottom: 20px;
-
-          &:nth-child(2) {
-            font-size: 1rem;
-            margin-bottom: 30px;
-          }
-        }
-      }
-    }
   }
 `;
 
@@ -91,12 +123,11 @@ interface INote {
 }
 
 function Memory(): JSX.Element {
+  const nav = useNavigate();
   const notesSlice = useSelector(
     (state: { notesSlice: { notes: INote[] } }) => state.notesSlice.notes
   );
-  const [openAdd, setOpenAdd] = useState<boolean>(false);
-  const [openEdit, setOpenEdit] = useState<boolean>(false);
-  const [openViewer, setOpenViewer] = useState<boolean>(false); // 뷰어 끄는 기능 만드는 거 고려하기.
+
   const [currentNote, setCurrentNote] = useState<INote>({
     id: '',
     title: '',
@@ -104,75 +135,58 @@ function Memory(): JSX.Element {
     content: '',
   });
 
-  const toggleAdd = () => {
-    setOpenAdd(!openAdd);
-  };
-
-  const toggleEdit = () => {
-    setOpenEdit(!openEdit);
-  };
-
-  const closeEditor = () => {
-    setOpenAdd(false);
-    setOpenEdit(false);
-  };
-
   return (
     <Container>
       <FunctionBar>
-        <button type="button" onClick={toggleAdd}>
+        <button type="button" onClick={() => nav('/memory/add')}>
           addNote
         </button>
       </FunctionBar>
       <ContentsWrapper>
-        <ul className="lists">
-          {notesSlice.map((note, idx) => {
-            return (
-              <ListItem
-                // eslint-disable-next-line react/no-array-index-key
-                key={idx}
-                note={note}
-                setCurrentNote={setCurrentNote}
-                setOpenViewer={setOpenViewer}
-                closeEditor={closeEditor}
-              />
-            );
-          })}
-        </ul>
-        <div className="contents">
-          {/* 추가 페이지 */}
-          {openAdd && <AddNote setOpenAdd={setOpenAdd} />}
-
-          {/* 수정 페이지 */}
-          {openEdit && (
-            <EditNote setOpenEdit={setOpenEdit} currentNote={currentNote} />
-          )}
-
-          {/* 뷰어 표시 */}
-          {currentNote.id && !openAdd && !openEdit ? (
-            <Viewer note={currentNote} toggleEdit={toggleEdit} />
-          ) : null}
-
-          {/* 기본 페이지 렌더링 */}
-          {!openViewer && !openAdd && !openEdit && (
-            <div className="default_page">
-              {/* 노트가 선택되지 않은 경우 */}
-              {notesSlice.length && !openAdd && !openEdit ? (
-                <p>선택된 노트가 없습니다.</p>
-              ) : null}
-
-              {/* 작성한 노트가 없는 경우 */}
-              {!notesSlice.length && !openAdd && !openEdit ? (
-                <div className="note_not_found">
-                  <p>작성된 노트가 없습니다.</p>
-                  <p>아래 버튼을 눌러 노트를 추가하세요.</p>
-                  <button type="button" onClick={toggleAdd}>
-                    addNote
-                  </button>
-                </div>
-              ) : null}
+        {/* 노트 리스트 표시 */}
+        <div className="list_wrapper">
+          {notesSlice.length ? (
+            <ul className="lists">
+              {notesSlice.map((note, idx) => {
+                return (
+                  <ListItem
+                    // eslint-disable-next-line react/no-array-index-key
+                    key={idx}
+                    note={note}
+                    setCurrentNote={setCurrentNote}
+                  />
+                );
+              })}
+            </ul>
+          ) : (
+            <div className="empty">
+              <div className="note_not_found">
+                <p>작성된 노트가 없습니다.</p>
+                <p>아래 버튼을 눌러 노트를 추가하세요.</p>
+                <button
+                  type="button"
+                  onClick={() => {
+                    nav('/memory/add');
+                  }}
+                >
+                  <span>+</span>
+                </button>
+              </div>
             </div>
           )}
+        </div>
+
+        {/* 중첩 라우팅을 이용하여 뷰어 및 에디터 표시 */}
+        <div className="contents_wrapper">
+          <Routes>
+            <Route path="/" element={<DefaultPage />} />
+            <Route path="view" element={<Viewer note={currentNote} />} />
+            <Route path="add" element={<AddNote />} />
+            <Route
+              path="edit"
+              element={<EditNote currentNote={currentNote} />}
+            />
+          </Routes>
         </div>
       </ContentsWrapper>
     </Container>

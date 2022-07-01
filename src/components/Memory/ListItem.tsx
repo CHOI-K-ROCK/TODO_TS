@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const Item = styled.li`
@@ -100,15 +101,12 @@ interface INote {
 function ListItem({
   note,
   setCurrentNote,
-  setOpenViewer,
-  closeEditor,
 }: {
   note: INote;
   setCurrentNote: React.Dispatch<React.SetStateAction<INote>>;
-  setOpenViewer: React.Dispatch<React.SetStateAction<boolean>>;
-  closeEditor: () => void;
 }): JSX.Element {
   const { id, title, keywords, content } = note;
+  const nav = useNavigate();
 
   const listClickHandler = () => {
     setCurrentNote({
@@ -117,8 +115,7 @@ function ListItem({
       keywords,
       content,
     });
-    setOpenViewer(true);
-    closeEditor();
+    nav('/memory/view');
   };
 
   return (

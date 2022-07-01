@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { BsPen as EditIcon, BsTrash as DeleteIcon } from 'react-icons/bs';
 import { useDispatch } from 'react-redux';
 import { notesActions } from 'modules/memory';
+import { useNavigate } from 'react-router-dom';
 
 const Container = styled.section`
   position: relative;
@@ -143,15 +144,15 @@ interface INote {
   content: string;
 }
 
-function Viewer({
-  note,
-  toggleEdit,
-}: {
-  note: INote;
-  toggleEdit: () => void;
-}): JSX.Element {
+function Viewer({ note }: { note: INote }): JSX.Element {
   const { id, title, keywords, content } = note;
   const dispatch = useDispatch();
+  const nav = useNavigate();
+
+  const deleteBtnHandler = () => {
+    dispatch(notesActions.deleteNote({ id }));
+    nav('/memory');
+  };
 
   const searchOnGoogle = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     console.dir(e);
@@ -168,13 +169,17 @@ function Viewer({
       <Title>{title}</Title>
 
       <BtnWrapper>
-        <button type="button" className="edit" onClick={toggleEdit}>
+        <button
+          type="button"
+          className="edit"
+          onClick={() => nav('/memory/edit')}
+        >
           <EditIcon />
         </button>
         <button
           type="button"
           className="delete"
-          onClick={() => dispatch(notesActions.deleteNote({ id }))}
+          onClick={() => deleteBtnHandler()}
         >
           <DeleteIcon />
         </button>

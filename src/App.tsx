@@ -119,7 +119,6 @@ function App(): JSX.Element {
 
   useEffect(() => {
     if (window.location.pathname === '/') nav('/todo');
-    if (window.location.pathname === '/todo_typescript/') nav('/todo');
   }, [nav]);
 
   return (
@@ -136,7 +135,7 @@ function App(): JSX.Element {
                 <TodoList todoList={todoList} setTodoList={setTodoList} />
               }
             />
-            <Route path="memory" element={<Memory />} />
+            <Route path="memory/*" element={<Memory />} />
           </Routes>
         </InnerContainer>
       </Container>
