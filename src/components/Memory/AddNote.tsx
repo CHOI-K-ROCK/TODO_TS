@@ -273,7 +273,7 @@ function AddNote(): JSX.Element {
         content,
       })
     );
-    nav('/memory/view');
+    nav('/memory');
   };
 
   return (
