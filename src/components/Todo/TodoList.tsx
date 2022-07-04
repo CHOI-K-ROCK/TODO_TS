@@ -11,6 +11,8 @@ import Input from './Input';
 
 const Container = styled.section`
   width: 100%;
+  min-height: 680px;
+  max-height: max-content;
 
   .todo_wrapper {
     position: relative;

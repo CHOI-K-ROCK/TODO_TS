@@ -10,7 +10,7 @@ const Container = styled.section`
   display: flex;
   flex-direction: column;
   justify-content: center;
-
+  box-sizing: border-box;
   padding: 30px;
 
   .close_btn {
@@ -190,8 +190,10 @@ const ContentWrapper = styled.div`
 const Notification = styled.div`
   display: flex;
   justify-content: flex-end;
+  align-items: center;
 
   width: 100%;
+  height: 30px;
   margin-bottom: 8px;
   font-size: 0.9rem;
 

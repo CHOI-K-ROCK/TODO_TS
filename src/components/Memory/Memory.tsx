@@ -13,6 +13,7 @@ import Viewer from './Viewer';
 
 const Container = styled.section`
   width: 100%;
+  min-height: 680px;
 `;
 
 const FunctionBar = styled.div`
@@ -25,16 +26,17 @@ const FunctionBar = styled.div`
 const ContentsWrapper = styled.div`
   display: flex;
   gap: 10px;
+  min-height: 680px;
 
   .list_wrapper {
     flex: 1 0;
 
     min-width: 300px;
-    min-height: 600px;
-    height: max-content;
+    height: 680px;
+    overflow: auto;
 
     .empty {
-      height: 600px;
+      height: 680px;
       display: grid;
       place-items: center;
 
@@ -89,7 +91,7 @@ const ContentsWrapper = styled.div`
 
   .contents_wrapper {
     flex: 2 0;
-    min-height: 600px;
+    min-height: 100%;
     height: max-content;
 
     box-sizing: border-box;
@@ -134,10 +136,16 @@ function Memory(): JSX.Element {
     keywords: [],
     content: '',
   });
+  const [searchValue, setSearchValue] = useState<string>('');
 
   return (
     <Container>
       <FunctionBar>
+        <input
+          type="text"
+          className="search_bar"
+          onChange={(e) => setSearchValue(e.target.value)}
+        />
         <button type="button" onClick={() => nav('/memory/add')}>
           addNote
         </button>
@@ -147,16 +155,23 @@ function Memory(): JSX.Element {
         <div className="list_wrapper">
           {notesSlice.length ? (
             <ul className="lists">
-              {notesSlice.map((note, idx) => {
-                return (
-                  <ListItem
-                    // eslint-disable-next-line react/no-array-index-key
-                    key={idx}
-                    note={note}
-                    setCurrentNote={setCurrentNote}
-                  />
-                );
-              })}
+              {notesSlice
+                .filter((note) => {
+                  if (searchValue) {
+                    return note.title.match(searchValue);
+                  }
+                  return true;
+                })
+                .map((note, idx) => {
+                  return (
+                    <ListItem
+                      // eslint-disable-next-line react/no-array-index-key
+                      key={idx}
+                      note={note}
+                      setCurrentNote={setCurrentNote}
+                    />
+                  );
+                })}
             </ul>
           ) : (
             <div className="empty">

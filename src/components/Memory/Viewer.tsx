@@ -7,7 +7,9 @@ import { useNavigate } from 'react-router-dom';
 
 const Container = styled.section`
   position: relative;
-  height: 100%;
+  min-height: 680px;
+  max-height: max-content;
+  box-sizing: border-box;
   padding: 30px;
 
   .content {
