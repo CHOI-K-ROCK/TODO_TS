@@ -1,4 +1,6 @@
-import React from 'react';
+import { notesActions } from 'modules/memory';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -39,17 +41,40 @@ const Item = styled.li`
   &:hover {
     background-color: #f8f8f8;
   }
+  .title_wrapper {
+    position: relative;
 
-  .title {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    .title {
+      width: 90%;
 
-    font-size: 1.1rem;
-    font-weight: bold;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
 
-    margin-bottom: 10px;
-    height: 20px;
+      font-size: 1.1rem;
+      font-weight: bold;
+
+      margin-bottom: 10px;
+      height: 20px;
+    }
+
+    button {
+      position: absolute;
+      top: -2px;
+      right: -5px;
+
+      background: none;
+      border: none;
+      font-size: 1.2rem;
+
+      cursor: pointer;
+
+      transition: 0.1s;
+
+      &:hover {
+        color: #fb8888;
+      }
+    }
   }
 
   .content {
@@ -57,7 +82,6 @@ const Item = styled.li`
 
     font-size: 0.9rem;
     overflow: hidden;
-    text-overflow: ellipsis;
     white-space: pre-wrap;
 
     display: -webkit-box;
@@ -88,6 +112,16 @@ const KeywordsWrapper = styled.div`
     border-radius: 100vmax;
 
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+
+    &.empty {
+      padding: 5px 0;
+      border: none;
+
+      background-color: transparent;
+      box-shadow: none;
+
+      color: #777;
+    }
   }
 `;
 
@@ -107,29 +141,42 @@ function ListItem({
 }): JSX.Element {
   const { id, title, keywords, content } = note;
   const nav = useNavigate();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    setCurrentNote(note);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [note]);
 
   const listClickHandler = () => {
-    setCurrentNote({
-      id,
-      title,
-      keywords,
-      content,
-    });
+    setCurrentNote(note);
     nav('/memory/view');
   };
 
   return (
     <Item onClick={listClickHandler}>
-      <div className="title">{title}</div>
+      <div className="title_wrapper">
+        <div className="title">{title}</div>
+        <button
+          type="button"
+          onClick={() => dispatch(notesActions.deleteNote({ id }))}
+        >
+          ✕
+        </button>
+      </div>
       <KeywordsWrapper>
-        {keywords?.map((el, idx) => {
-          return (
-            // eslint-disable-next-line react/no-array-index-key
-            <div className="keyword" key={idx}>
-              {el}
-            </div>
-          );
-        })}
+        {keywords.length ? (
+          keywords?.map((el, idx) => {
+            return (
+              // eslint-disable-next-line react/no-array-index-key
+              <div className="keyword" key={idx}>
+                {el}
+              </div>
+            );
+          })
+        ) : (
+          <div className="keyword empty">키워드 없음</div>
+        )}
       </KeywordsWrapper>
       <pre className="content">{content}</pre>
     </Item>

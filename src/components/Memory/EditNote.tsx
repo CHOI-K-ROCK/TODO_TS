@@ -154,6 +154,7 @@ const KeywordsWrapper = styled.div`
 
 const ContentWrapper = styled.div`
   margin-bottom: 10px;
+
   .content_input {
     width: 100%;
     height: 400px;
@@ -178,8 +179,10 @@ const ContentWrapper = styled.div`
 const Notification = styled.div`
   display: flex;
   justify-content: flex-end;
+  align-items: center;
 
   width: 100%;
+  height: 30px;
   margin-bottom: 8px;
   font-size: 0.9rem;
 
@@ -230,12 +233,14 @@ function EditNote({ currentNote }: { currentNote: INote }): JSX.Element {
   const dispatch = useDispatch();
   const nav = useNavigate();
 
+  const [id, setId] = useState<string>('');
   const [title, setTitle] = useState<string>('');
   const [keywords, setKeywords] = useState<string[]>([]);
   const [keywordValue, setKeywordValue] = useState<string>('');
   const [content, setContent] = useState<string>('');
 
   useEffect(() => {
+    setId(currentNote.id);
     setTitle(currentNote.title);
     setKeywords(currentNote.keywords);
     setContent(currentNote.content);
@@ -269,7 +274,7 @@ function EditNote({ currentNote }: { currentNote: INote }): JSX.Element {
   const editNote = () => {
     dispatch(
       notesActions.editNote({
-        id: uuidv4(),
+        id,
         title,
         keywords,
         content,
