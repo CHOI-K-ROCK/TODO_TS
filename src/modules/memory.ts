@@ -9,7 +9,20 @@ interface INote {
 }
 
 const initialState = {
-  notes: [],
+  notes: [
+    {
+      id: '741a8f39-7747-463e-a233-4f3dae8d638b',
+      title: '노트 테스트',
+      keywords: ['테스트 키워드', '테스트 키워드 2'],
+      content: '노트 테스트',
+    },
+    {
+      id: '741a2f39-sg24-2341-a233-4f3da234638b',
+      title: '노트 테스트2',
+      keywords: ['테스트 키워드', '테스트 키워드 2'],
+      content: '노트 테스트2',
+    },
+  ],
 };
 
 const notesSlice = createSlice({
@@ -37,7 +50,11 @@ const notesSlice = createSlice({
       });
     },
     editNote(state: { notes: INote[] }, action: { payload: INote }) {
-      console.log(action.payload);
+      const noteIdx = state.notes.findIndex((note) => {
+        return note.id === action.payload.id;
+      });
+
+      state.notes[noteIdx] = action.payload;
     },
   },
 });

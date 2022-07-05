@@ -8,7 +8,18 @@ interface ITodo {
 }
 
 const initialState = {
-  todos: [],
+  todos: [
+    {
+      id: 'dc3d07a0-57c3-4bc1-a25e-d5f46f0db06f',
+      done: false,
+      content: 'todo example',
+    },
+    {
+      id: '0fec7384-fd31-462f-8df2-4cc48b31fd3c',
+      done: true,
+      content: 'done example',
+    },
+  ],
 };
 
 const todosSlice = createSlice({

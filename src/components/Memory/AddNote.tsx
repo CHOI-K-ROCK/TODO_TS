@@ -10,16 +10,17 @@ const Container = styled.section`
   display: flex;
   flex-direction: column;
   justify-content: center;
-
+  box-sizing: border-box;
   padding: 30px;
 
   .close_btn {
     display: grid;
     place-items: center;
-    padding: 3px 0;
 
-    width: 30px;
-    height: 30px;
+    width: 2.5rem;
+    height: 2.5rem;
+
+    padding: 0;
 
     position: absolute;
     top: 25px;
@@ -86,7 +87,7 @@ const KeywordsWrapper = styled.div`
     border: none;
     outline: none;
 
-    &:focus + .notifiation::after {
+    &:focus + .notification::after {
       /* 인접 형제 선택자, 포커스된 인풋과 인접한 형제요소 .notifiation 의 가상 선택자를 선택함. */
       content: '엔터를 눌러 키워드를 추가할 수 있습니다. \\A 키워드를 클릭하여 삭제 할 수 있습니다.';
       white-space: pre;
@@ -166,6 +167,7 @@ const KeywordsWrapper = styled.div`
 
 const ContentWrapper = styled.div`
   margin-bottom: 10px;
+
   .content_input {
     width: 100%;
     height: 400px;
@@ -190,8 +192,10 @@ const ContentWrapper = styled.div`
 const Notification = styled.div`
   display: flex;
   justify-content: flex-end;
+  align-items: center;
 
   width: 100%;
+  height: 30px;
   margin-bottom: 8px;
   font-size: 0.9rem;
 
@@ -324,7 +328,7 @@ function AddNote(): JSX.Element {
           onChange={(e) => setKeywordValue(e.currentTarget.value)}
           onKeyDown={(e) => addKeyword(e)}
         />
-        <div className="notifiation" />
+        <div className="notification" />
       </KeywordsWrapper>
 
       {/* 본문 */}

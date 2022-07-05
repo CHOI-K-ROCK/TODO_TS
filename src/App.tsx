@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
+import { GoPerson, GoMarkGithub } from 'react-icons/go';
 import reset from 'styled-reset';
 
 import { useDispatch, useSelector } from 'react-redux';
+
 import { todosActions } from 'modules/todos';
+import { notesActions } from 'modules/memory';
 
 import MenuBar from 'components/MenuBar';
 import TodoList from 'components/Todo/TodoList';
 import Memory from 'components/Memory/Memory';
-import { notesActions } from 'modules/memory';
 
 const GlobalStyles = createGlobalStyle`
     ${reset}
@@ -21,6 +23,8 @@ const GlobalStyles = createGlobalStyle`
     a {
       color: #000;
     }
+
+
   `;
 
 const Container = styled.div`
@@ -35,7 +39,7 @@ const Container = styled.div`
 `;
 
 const InnerContainer = styled.section`
-  width: 60%;
+  width: 60vw;
   max-width: 1000px;
   height: max-content;
 
@@ -58,11 +62,20 @@ const Title = styled.section`
   letter-spacing: 0.1rem;
 `;
 
-const Footer = styled.footer`
-  height: 200px;
-  width: 100vw;
-  margin-top: 30px;
-  border: 1px solid;
+const Footer = styled.div`
+  position: absolute;
+  right: 40px;
+  top: 40px;
+
+  .icon_wrapper {
+    display: flex;
+    gap: 15px;
+
+    .icon {
+      font-size: 2.4rem;
+      cursor: pointer;
+    }
+  }
 `;
 
 interface ITodo {
@@ -101,7 +114,6 @@ function App(): JSX.Element {
     const notesData: string | null = window.localStorage.getItem('notesData');
 
     if (todosData) dispatch(todosActions.getLocalStorage());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     if (notesData) dispatch(notesActions.getLocalStorage());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -139,7 +151,25 @@ function App(): JSX.Element {
           </Routes>
         </InnerContainer>
       </Container>
-      <Footer />
+      <Footer>
+        <div className="icon_wrapper">
+          <GoPerson
+            className="icon"
+            onClick={() =>
+              window.open('https://github.com/CHOI-K-ROCK/', '_blank')
+            }
+          />
+          <GoMarkGithub
+            className="icon"
+            onClick={() =>
+              window.open(
+                'https://github.com/CHOI-K-ROCK/memory_todo',
+                '_blank'
+              )
+            }
+          />
+        </div>
+      </Footer>
     </>
   );
 }

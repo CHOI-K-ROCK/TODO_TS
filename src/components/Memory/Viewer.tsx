@@ -6,8 +6,12 @@ import { notesActions } from 'modules/memory';
 import { useNavigate } from 'react-router-dom';
 
 const Container = styled.section`
+  width: 100%;
+
   position: relative;
-  height: 100%;
+  min-height: 680px;
+  max-height: max-content;
+  box-sizing: border-box;
   padding: 30px;
 
   .content {
@@ -15,26 +19,50 @@ const Container = styled.section`
   }
 `;
 
-const Title = styled.h2`
-  font-size: 1.3rem;
-  font-weight: bold;
+const TitleWrapper = styled.div`
   margin-bottom: 20px;
+
+  .title {
+    width: 85%;
+
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+
+    overflow: hidden;
+    word-break: break-all;
+
+    font-size: 1.3rem;
+    font-weight: bold;
+  }
 `;
 
 const BtnWrapper = styled.div`
   position: absolute;
-  top: 25px;
+  top: 20px;
   right: 30px;
 
   display: flex;
+  flex-direction: column;
+  align-items: end;
   gap: 5px;
 
   width: max-content;
   padding: 3px 0;
 
+  .wrapper {
+    display: flex;
+    gap: 5px;
+  }
+
   button {
-    display: block;
-    padding-top: 6px;
+    width: 2.5rem;
+    height: 2.5rem;
+
+    padding: 0;
+
+    display: grid;
+    place-items: center;
 
     background: none;
     border: none;
@@ -58,8 +86,10 @@ const KeywordsWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
+  width: 80%;
 
-  height: 1.2rem;
+  min-height: 1.2rem;
+  height: max-content;
   margin-bottom: 25px;
 
   .no_keyword {
@@ -121,7 +151,7 @@ const ContentWrapper = styled.div`
 
   .content {
     width: 100%;
-    min-height: 450px;
+    min-height: 500px;
     max-height: 600px;
     height: max-content;
 
@@ -132,6 +162,7 @@ const ContentWrapper = styled.div`
     border-radius: 5px;
 
     font-size: 1rem;
+    word-break: break-all;
 
     overflow: auto;
   }
@@ -155,34 +186,40 @@ function Viewer({ note }: { note: INote }): JSX.Element {
   };
 
   const searchOnGoogle = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    console.dir(e);
     const target = e.target as HTMLDivElement;
     window.open(
       `https://www.google.com/search?q=${target.innerText}`,
       '_blank'
     );
   };
-
+  console.log(note);
   return (
     <Container>
       {/* 제목 */}
-      <Title>{title}</Title>
+      <TitleWrapper>
+        <h2 className="title">{title}</h2>
+      </TitleWrapper>
 
       <BtnWrapper>
-        <button
-          type="button"
-          className="edit"
-          onClick={() => nav('/memory/edit')}
-        >
-          <EditIcon />
+        <button type="button" className="edit" onClick={() => nav('/memory')}>
+          ✕
         </button>
-        <button
-          type="button"
-          className="delete"
-          onClick={() => deleteBtnHandler()}
-        >
-          <DeleteIcon />
-        </button>
+        <div className="wrapper">
+          <button
+            type="button"
+            className="edit"
+            onClick={() => nav('/memory/edit')}
+          >
+            <EditIcon />
+          </button>
+          <button
+            type="button"
+            className="delete"
+            onClick={() => deleteBtnHandler()}
+          >
+            <DeleteIcon />
+          </button>
+        </div>
       </BtnWrapper>
 
       {/* 키워드 */}

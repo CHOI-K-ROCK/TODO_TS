@@ -5,8 +5,8 @@ const Container = styled.section`
   .default_page {
     display: grid;
     place-items: center;
-
-    height: 600px;
+    box-sizing: border-box;
+    height: 680px;
 
     font-size: 1.2rem;
     color: #777;
