@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { BsPen as EditIcon, BsTrash as DeleteIcon } from 'react-icons/bs';
 import { useDispatch } from 'react-redux';
@@ -179,6 +179,12 @@ function Viewer({ note }: { note: INote }): JSX.Element {
   const { id, title, keywords, content } = note;
   const dispatch = useDispatch();
   const nav = useNavigate();
+
+  useEffect(() => {
+    if (!note.id) {
+      nav('/memory');
+    }
+  });
 
   const deleteBtnHandler = () => {
     dispatch(notesActions.deleteNote({ id }));

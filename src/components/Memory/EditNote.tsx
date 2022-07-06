@@ -229,15 +229,22 @@ interface INote {
   content: string;
 }
 
-function EditNote({ currentNote }: { currentNote: INote }): JSX.Element {
+function EditNote({
+  currentNote,
+  setCurrentNote,
+}: {
+  currentNote: INote;
+  setCurrentNote: React.Dispatch<React.SetStateAction<INote>>;
+}): JSX.Element {
   const dispatch = useDispatch();
   const nav = useNavigate();
 
   const [id, setId] = useState<string>('');
   const [title, setTitle] = useState<string>('');
   const [keywords, setKeywords] = useState<string[]>([]);
-  const [keywordValue, setKeywordValue] = useState<string>('');
   const [content, setContent] = useState<string>('');
+
+  const [keywordValue, setKeywordValue] = useState<string>('');
 
   useEffect(() => {
     setId(currentNote.id);
@@ -280,6 +287,7 @@ function EditNote({ currentNote }: { currentNote: INote }): JSX.Element {
         content,
       })
     );
+    setCurrentNote({ id, title, keywords, content });
     nav('/memory/view');
   };
 

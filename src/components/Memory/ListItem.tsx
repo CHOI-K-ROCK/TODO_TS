@@ -143,11 +143,6 @@ function ListItem({
   const nav = useNavigate();
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    setCurrentNote(note);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [note]);
-
   const listClickHandler = () => {
     setCurrentNote(note);
     nav('/memory/view');

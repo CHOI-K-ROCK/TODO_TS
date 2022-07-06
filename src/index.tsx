@@ -9,15 +9,15 @@ import reportWebVitals from './reportWebVitals';
 
 import todosSlice from './modules/todos';
 import notesSlice from './modules/memory';
+import modalsSlice from './modules/modals';
 
 const store = configureStore({
   reducer: {
     todosSlice,
     notesSlice,
+    modalsSlice,
   },
 });
-
-console.log(store.getState());
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

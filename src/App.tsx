@@ -10,8 +10,9 @@ import { todosActions } from 'modules/todos';
 import { notesActions } from 'modules/memory';
 
 import MenuBar from 'components/MenuBar';
-import TodoList from 'components/Todo/TodoList';
-import Memory from 'components/Memory/Memory';
+import TodoList from 'components/TodoList';
+import Memory from 'components/Memory';
+import Modals from 'components/Modals';
 
 const GlobalStyles = createGlobalStyle`
     ${reset}
@@ -137,6 +138,7 @@ function App(): JSX.Element {
     <>
       <Container>
         <GlobalStyles />
+        <Modals />
         <InnerContainer>
           <Title>&lt; memoryTodo /&gt;</Title>
           <MenuBar />
