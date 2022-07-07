@@ -10,7 +10,7 @@ import DefaultPage from './Memory/DefaultPage';
 import EditNote from './Memory/EditNote';
 import ListItem from './Memory/ListItem';
 import Viewer from './Memory/Viewer';
-import TwoBtnModal from './Modals/Modal';
+import Modal from './Modals/Modal';
 import RandomNote from './Modals/RandomNote';
 
 const Container = styled.section`
@@ -228,11 +228,27 @@ function Memory(): JSX.Element {
   });
   const [searchValue, setSearchValue] = useState<string>('');
   const [isShowRandomNote, setShowRandomNote] = useState<boolean>(false);
+  const [alertModalOpen, setAlertModalOpen] = useState<boolean>(false);
+
+  const randomNoteBtnHandler = () => {
+    if (notesSlice.length) {
+      setShowRandomNote(true);
+    } else {
+      setAlertModalOpen(true);
+    }
+  };
 
   return (
     <>
       {/* 랜덤 노트 표시 */}
       {isShowRandomNote && <RandomNote setShowRandomNote={setShowRandomNote} />}
+      {alertModalOpen && (
+        <Modal
+          msg="작성된 노트가 없습니다."
+          type="single"
+          applyFn={() => setAlertModalOpen(false)}
+        />
+      )}
       <Container>
         {/* 검색 및 기능 바 */}
         <FunctionBar>
@@ -249,7 +265,7 @@ function Memory(): JSX.Element {
             </div>
           </div>
           <div className="btn_wrapper">
-            <button type="button" onClick={() => setShowRandomNote(true)}>
+            <button type="button" onClick={randomNoteBtnHandler}>
               <span>Random</span>
             </button>
             <button type="button" onClick={() => nav('/memory/add')}>

@@ -181,7 +181,7 @@ function Viewer({ note }: { note: INote }): JSX.Element {
   const dispatch = useDispatch();
   const nav = useNavigate();
 
-  const [isModalOpen, setModalOpen] = useState<boolean>(false);
+  const [isDeleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
     if (!note.id) {
@@ -207,11 +207,11 @@ function Viewer({ note }: { note: INote }): JSX.Element {
 
   return (
     <>
-      {isModalOpen && (
+      {isDeleteModalOpen && (
         <Modal
           msg="노트를 삭제하시겠습니까?"
           applyFn={apply}
-          dismissFn={() => setModalOpen(false)}
+          dismissFn={() => setDeleteModalOpen(false)}
           type="double"
         />
       )}
@@ -236,7 +236,7 @@ function Viewer({ note }: { note: INote }): JSX.Element {
             <button
               type="button"
               className="delete"
-              onClick={() => setModalOpen(true)}
+              onClick={() => setDeleteModalOpen(true)}
             >
               <DeleteIcon />
             </button>
