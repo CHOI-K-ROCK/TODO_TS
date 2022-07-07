@@ -11,6 +11,7 @@ import EditNote from './Memory/EditNote';
 import ListItem from './Memory/ListItem';
 import Viewer from './Memory/Viewer';
 import TwoBtnModal from './Modals/Modal';
+import RandomNote from './Modals/RandomNote';
 
 const Container = styled.section`
   width: 100%;
@@ -73,6 +74,7 @@ const FunctionBar = styled.div`
     display: flex;
     justify-content: flex-end;
     align-items: center;
+    gap: 10px;
 
     button {
       display: flex;
@@ -218,98 +220,106 @@ function Memory(): JSX.Element {
     (state: { notesSlice: { notes: INote[] } }) => state.notesSlice.notes
   );
 
-  const [searchValue, setSearchValue] = useState<string>('');
   const [currentNote, setCurrentNote] = useState<INote>({
     id: '',
     title: '',
     keywords: [],
     content: '',
   });
+  const [searchValue, setSearchValue] = useState<string>('');
+  const [isShowRandomNote, setShowRandomNote] = useState<boolean>(false);
 
   return (
-    <Container>
-      {/* 검색 및 기능 바 */}
-      <FunctionBar>
-        <div className="search_wrapper">
-          <input
-            type="text"
-            className="search_bar"
-            placeholder="검색하기"
-            spellCheck={false}
-            onChange={(e) => setSearchValue(e.target.value)}
-          />
-          <div className="icon">
-            <SearchIcon size="1.4rem" />
-          </div>
-        </div>
-        <div className="btn_wrapper">
-          <button type="button" onClick={() => nav('/memory/add')}>
-            <span>노트추가</span>
-            <PlusIcon />
-          </button>
-        </div>
-      </FunctionBar>
-      <ContentsWrapper>
-        {/* 노트 리스트 표시 */}
-        <div className="list_wrapper">
-          {notesSlice.length ? (
-            <ul className="lists">
-              {notesSlice
-                .filter((note) => {
-                  if (searchValue) {
-                    return note.title.match(searchValue);
-                  }
-                  return true;
-                })
-                .map((note, idx) => {
-                  return (
-                    <ListItem
-                      // eslint-disable-next-line react/no-array-index-key
-                      key={idx}
-                      note={note}
-                      setCurrentNote={setCurrentNote}
-                    />
-                  );
-                })}
-            </ul>
-          ) : (
-            // 리스트의 길이가 0인 경우 메시지 표시
-            <div className="empty_list">
-              <div className="note_not_found">
-                <p>작성된 노트가 없습니다.</p>
-                <p>아래 버튼을 눌러 노트를 추가하세요.</p>
-                <button
-                  type="button"
-                  onClick={() => {
-                    nav('/memory/add');
-                  }}
-                >
-                  <span>+</span>
-                </button>
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* 중첩 라우팅을 이용하여 뷰어 및 에디터 표시 */}
-        <div className="contents_wrapper">
-          <Routes>
-            <Route path="/" element={<DefaultPage />} />
-            <Route path="view" element={<Viewer note={currentNote} />} />
-            <Route path="add" element={<AddNote />} />
-            <Route
-              path="edit"
-              element={
-                <EditNote
-                  currentNote={currentNote}
-                  setCurrentNote={setCurrentNote}
-                />
-              }
+    <>
+      {/* 랜덤 노트 표시 */}
+      {isShowRandomNote && <RandomNote setShowRandomNote={setShowRandomNote} />}
+      <Container>
+        {/* 검색 및 기능 바 */}
+        <FunctionBar>
+          <div className="search_wrapper">
+            <input
+              type="text"
+              className="search_bar"
+              placeholder="검색하기"
+              spellCheck={false}
+              onChange={(e) => setSearchValue(e.target.value)}
             />
-          </Routes>
-        </div>
-      </ContentsWrapper>
-    </Container>
+            <div className="icon">
+              <SearchIcon size="1.4rem" />
+            </div>
+          </div>
+          <div className="btn_wrapper">
+            <button type="button" onClick={() => setShowRandomNote(true)}>
+              <span>Random</span>
+            </button>
+            <button type="button" onClick={() => nav('/memory/add')}>
+              <span>노트추가</span>
+              <PlusIcon />
+            </button>
+          </div>
+        </FunctionBar>
+        <ContentsWrapper>
+          {/* 노트 리스트 표시 */}
+          <div className="list_wrapper">
+            {notesSlice.length ? (
+              <ul className="lists">
+                {notesSlice
+                  .filter((note) => {
+                    if (searchValue) {
+                      return note.title.match(searchValue);
+                    }
+                    return true;
+                  })
+                  .map((note, idx) => {
+                    return (
+                      <ListItem
+                        // eslint-disable-next-line react/no-array-index-key
+                        key={idx}
+                        note={note}
+                        setCurrentNote={setCurrentNote}
+                      />
+                    );
+                  })}
+              </ul>
+            ) : (
+              // 리스트의 길이가 0인 경우 메시지 표시
+              <div className="empty_list">
+                <div className="note_not_found">
+                  <p>작성된 노트가 없습니다.</p>
+                  <p>아래 버튼을 눌러 노트를 추가하세요.</p>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      nav('/memory/add');
+                    }}
+                  >
+                    <span>+</span>
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* 중첩 라우팅을 이용하여 뷰어 및 에디터 표시 */}
+          <div className="contents_wrapper">
+            <Routes>
+              <Route path="/" element={<DefaultPage />} />
+              <Route path="view" element={<Viewer note={currentNote} />} />
+              <Route path="add" element={<AddNote />} />
+              <Route
+                path="edit"
+                element={
+                  <EditNote
+                    currentNote={currentNote}
+                    setCurrentNote={setCurrentNote}
+                  />
+                }
+              />
+            </Routes>
+          </div>
+        </ContentsWrapper>
+      </Container>
+    </>
   );
 }
 

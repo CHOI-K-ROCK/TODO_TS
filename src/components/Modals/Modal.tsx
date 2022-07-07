@@ -10,9 +10,20 @@ const Container = styled.section`
   background-color: rgba(0 0 0 / 0.2);
 
   z-index: 100;
+
+  animation: appear 0.2s linear;
+
+  @keyframes appear {
+    0% {
+      opacity: 0;
+    }
+    0% {
+      opacity: 1;
+    }
+  }
 `;
 
-const Modal = styled.div`
+const Overlay = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
@@ -32,7 +43,7 @@ const Modal = styled.div`
 
   animation: rise 0.2s linear;
 
-  @keyframes identifier {
+  @keyframes rise {
     0% {
       transform: translateY(-20px);
       opacity: 0;
@@ -40,33 +51,6 @@ const Modal = styled.div`
     0% {
       transform: translateY(0);
       opacity: 1;
-    }
-  }
-
-  .close_btn {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-
-    display: grid;
-    place-items: center;
-
-    width: 2rem;
-    height: 2rem;
-    padding: 0;
-    padding-top: 2px;
-
-    background: none;
-    border: none;
-    border-radius: 10px;
-
-    font-size: 1.5rem;
-
-    cursor: pointer;
-
-    &:hover {
-      background-color: #000;
-      color: #fff;
     }
   }
 
@@ -117,9 +101,13 @@ interface IProps {
   dismissFn?: () => void;
 }
 
-function TwoBtnModal({ msg, type, applyFn, dismissFn }: IProps): JSX.Element {
+function Modal({ msg, type, applyFn, dismissFn }: IProps): JSX.Element {
   const apply = () => {
     applyFn();
+
+    if (dismissFn) {
+      dismissFn();
+    }
   };
 
   const dismiss = () => {
@@ -129,10 +117,7 @@ function TwoBtnModal({ msg, type, applyFn, dismissFn }: IProps): JSX.Element {
   };
   return (
     <Container>
-      <Modal>
-        <button type="button" className="close_btn">
-          ✕
-        </button>
+      <Overlay>
         <div className="msg">{msg}</div>
         <div className="btn_wrapper">
           {type === 'single' && (
@@ -151,14 +136,14 @@ function TwoBtnModal({ msg, type, applyFn, dismissFn }: IProps): JSX.Element {
             </>
           )}
         </div>
-      </Modal>
+      </Overlay>
     </Container>
   );
 }
 
-TwoBtnModal.defaultProps = {
+Modal.defaultProps = {
   msg: '메시지를 입력하세요.',
   dismissFn: null,
 };
 
-export default TwoBtnModal;
+export default Modal;

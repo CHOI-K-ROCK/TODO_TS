@@ -1,5 +1,6 @@
+import Modal from 'components/Modals/Modal';
 import { notesActions } from 'modules/memory';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -143,38 +144,52 @@ function ListItem({
   const nav = useNavigate();
   const dispatch = useDispatch();
 
+  const [isModalOpen, setModalOpen] = useState<boolean>(false);
+
+  const applyFn = () => {
+    dispatch(notesActions.deleteNote({ id }));
+    nav('/memory');
+  };
+
   const listClickHandler = () => {
     setCurrentNote(note);
     nav('/memory/view');
   };
 
   return (
-    <Item onClick={listClickHandler}>
-      <div className="title_wrapper">
-        <div className="title">{title}</div>
-        <button
-          type="button"
-          onClick={() => dispatch(notesActions.deleteNote({ id }))}
-        >
-          ✕
-        </button>
-      </div>
-      <KeywordsWrapper>
-        {keywords.length ? (
-          keywords?.map((el, idx) => {
-            return (
-              // eslint-disable-next-line react/no-array-index-key
-              <div className="keyword" key={idx}>
-                {el}
-              </div>
-            );
-          })
-        ) : (
-          <div className="keyword empty">키워드 없음</div>
-        )}
-      </KeywordsWrapper>
-      <pre className="content">{content}</pre>
-    </Item>
+    <>
+      {isModalOpen && (
+        <Modal
+          msg="노트를 삭제하시겠습니까?"
+          applyFn={() => applyFn()}
+          dismissFn={() => setModalOpen(false)}
+          type="double"
+        />
+      )}
+      <Item onClick={listClickHandler}>
+        <div className="title_wrapper">
+          <div className="title">{title}</div>
+          <button type="button" onClick={() => setModalOpen(true)}>
+            ✕
+          </button>
+        </div>
+        <KeywordsWrapper>
+          {keywords.length ? (
+            keywords?.map((el, idx) => {
+              return (
+                // eslint-disable-next-line react/no-array-index-key
+                <div className="keyword" key={idx}>
+                  {el}
+                </div>
+              );
+            })
+          ) : (
+            <div className="keyword empty">키워드 없음</div>
+          )}
+        </KeywordsWrapper>
+        <pre className="content">{content}</pre>
+      </Item>
+    </>
   );
 }
 

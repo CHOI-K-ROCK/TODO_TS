@@ -4,6 +4,7 @@ import { BsPen as EditIcon, BsTrash as DeleteIcon } from 'react-icons/bs';
 import { useDispatch } from 'react-redux';
 import { notesActions } from 'modules/memory';
 import { useNavigate } from 'react-router-dom';
+import Modal from 'components/Modals/Modal';
 
 const Container = styled.section`
   width: 100%;
@@ -180,16 +181,21 @@ function Viewer({ note }: { note: INote }): JSX.Element {
   const dispatch = useDispatch();
   const nav = useNavigate();
 
+  const [isModalOpen, setModalOpen] = useState<boolean>(false);
+
   useEffect(() => {
     if (!note.id) {
       nav('/memory');
     }
   });
+  // 모달 전달 함수
 
-  const deleteBtnHandler = () => {
+  const apply = () => {
     dispatch(notesActions.deleteNote({ id }));
     nav('/memory');
   };
+
+  // 컴포넌트 사용 함수
 
   const searchOnGoogle = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const target = e.target as HTMLDivElement;
@@ -198,61 +204,71 @@ function Viewer({ note }: { note: INote }): JSX.Element {
       '_blank'
     );
   };
-  console.log(note);
+
   return (
-    <Container>
-      {/* 제목 */}
-      <TitleWrapper>
-        <h2 className="title">{title}</h2>
-      </TitleWrapper>
+    <>
+      {isModalOpen && (
+        <Modal
+          msg="노트를 삭제하시겠습니까?"
+          applyFn={apply}
+          dismissFn={() => setModalOpen(false)}
+          type="double"
+        />
+      )}
+      <Container>
+        {/* 제목 */}
+        <TitleWrapper>
+          <h2 className="title">{title}</h2>
+        </TitleWrapper>
 
-      <BtnWrapper>
-        <button type="button" className="edit" onClick={() => nav('/memory')}>
-          ✕
-        </button>
-        <div className="wrapper">
-          <button
-            type="button"
-            className="edit"
-            onClick={() => nav('/memory/edit')}
-          >
-            <EditIcon />
+        <BtnWrapper>
+          <button type="button" className="edit" onClick={() => nav('/memory')}>
+            ✕
           </button>
-          <button
-            type="button"
-            className="delete"
-            onClick={() => deleteBtnHandler()}
-          >
-            <DeleteIcon />
-          </button>
-        </div>
-      </BtnWrapper>
+          <div className="wrapper">
+            <button
+              type="button"
+              className="edit"
+              onClick={() => nav('/memory/edit')}
+            >
+              <EditIcon />
+            </button>
+            <button
+              type="button"
+              className="delete"
+              onClick={() => setModalOpen(true)}
+            >
+              <DeleteIcon />
+            </button>
+          </div>
+        </BtnWrapper>
 
-      {/* 키워드 */}
-      <KeywordsWrapper>
-        {keywords.length ? (
-          keywords.map((keyword) => {
-            return (
-              // eslint-disable-next-line jsx-a11y/mouse-events-have-key-events
-              <div
-                className="keyword"
-                key={keyword}
-                onClick={(e) => searchOnGoogle(e)}
-              >
-                {keyword}
-              </div>
-            );
-          })
-        ) : (
-          <div className="no_keyword">작성된 키워드가 없습니다.</div>
-        )}
-      </KeywordsWrapper>
+        {/* 키워드 */}
+        <KeywordsWrapper>
+          {keywords.length ? (
+            keywords.map((keyword) => {
+              return (
+                // eslint-disable-next-line jsx-a11y/mouse-events-have-key-events
+                <div
+                  className="keyword"
+                  key={keyword}
+                  onClick={(e) => searchOnGoogle(e)}
+                >
+                  {keyword}
+                </div>
+              );
+            })
+          ) : (
+            <div className="no_keyword">작성된 키워드가 없습니다.</div>
+          )}
+        </KeywordsWrapper>
 
-      {/* 본문 */}
-      <ContentWrapper>
-        <pre className="content">{content}</pre>
-      </ContentWrapper>
-    </Container>
+        {/* 본문 */}
+        <ContentWrapper>
+          <pre className="content">{content}</pre>
+        </ContentWrapper>
+      </Container>
+    </>
   );
 }
 
