@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { notesActions } from 'modules/memory';
 import { useNavigate } from 'react-router-dom';
+import Modal from 'components/Modals/Modal';
 
 const Container = styled.section`
   position: relative;
@@ -229,15 +230,23 @@ interface INote {
   content: string;
 }
 
-function EditNote({ currentNote }: { currentNote: INote }): JSX.Element {
+function EditNote({
+  currentNote,
+  setCurrentNote,
+}: {
+  currentNote: INote;
+  setCurrentNote: React.Dispatch<React.SetStateAction<INote>>;
+}): JSX.Element {
   const dispatch = useDispatch();
   const nav = useNavigate();
 
   const [id, setId] = useState<string>('');
   const [title, setTitle] = useState<string>('');
   const [keywords, setKeywords] = useState<string[]>([]);
-  const [keywordValue, setKeywordValue] = useState<string>('');
   const [content, setContent] = useState<string>('');
+
+  const [keywordValue, setKeywordValue] = useState<string>('');
+  const [isModalOpen, setModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
     setId(currentNote.id);
@@ -280,95 +289,101 @@ function EditNote({ currentNote }: { currentNote: INote }): JSX.Element {
         content,
       })
     );
+    setCurrentNote({ id, title, keywords, content });
     nav('/memory/view');
   };
 
   return (
-    <Container>
-      <Title>노트 수정하기</Title>
-      <button
-        type="button"
-        className="close_btn"
-        onClick={() => nav('/memory/view')}
-      >
-        ✕
-      </button>
-
-      {/* 제목 */}
-      <NoteTitleWrapper>
-        <input
-          type="text"
-          value={title}
-          className="title_input"
-          placeholder="제목을 입력하세요"
-          spellCheck={false}
-          onChange={(e) => setTitle(e.target.value)}
-        />
-      </NoteTitleWrapper>
-
-      {/* 키워드 */}
-      <KeywordsWrapper>
-        {/* 키워드 표시 */}
-        {keywords?.map((keyword) => {
-          return (
-            <div
-              className="keyword"
-              role="button"
-              key={uuidv4()}
-              aria-hidden="true"
-              onClick={(e) => deleteKeyword(e)}
-            >
-              {keyword}
-            </div>
-          );
-        })}
-
-        {/* 키워드 입력 */}
-        <input
-          type="text"
-          className="keyword_input"
-          spellCheck={false}
-          placeholder="키워드를 입력하세요"
-          value={keywordValue}
-          onChange={(e) => setKeywordValue(e.currentTarget.value)}
-          onKeyDown={(e) => addKeyword(e)}
-        />
-        <div className="notifiation" />
-      </KeywordsWrapper>
-
-      {/* 본문 */}
-      <ContentWrapper>
-        <textarea
-          placeholder="내용을 작성해주세요."
-          className="content_input"
-          value={content}
-          spellCheck={false}
-          onChange={(e) => setContent(e.target.value)}
-        />
-      </ContentWrapper>
-
-      {/* 작성 필드 안내 */}
-      <Notification>
-        <div className="alert_msg">
-          {!title && !content ? '제목과 내용을 작성해주세요.' : null}
-        </div>
-        <div className="alert_msg">
-          {title && !content ? '내용을 작성해주세요.' : null}
-        </div>
-        <div className="alert_msg">
-          {!title && content ? '제목을 작성해주세요.' : null}
-        </div>
-      </Notification>
-
-      {/* 노트 추가 버튼 */}
-      {title && content ? (
-        <AddBtn type="button" onClick={editNote}>
-          수정완료
-        </AddBtn>
-      ) : (
-        <DisabledBtn>수정완료</DisabledBtn>
+    <>
+      {isModalOpen && (
+        <Modal msg="수정이 완료되었습니다." applyFn={editNote} type="single" />
       )}
-    </Container>
+      <Container>
+        <Title>노트 수정하기</Title>
+        <button
+          type="button"
+          className="close_btn"
+          onClick={() => nav('/memory/view')}
+        >
+          ✕
+        </button>
+
+        {/* 제목 */}
+        <NoteTitleWrapper>
+          <input
+            type="text"
+            value={title}
+            className="title_input"
+            placeholder="제목을 입력하세요"
+            spellCheck={false}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+        </NoteTitleWrapper>
+
+        {/* 키워드 */}
+        <KeywordsWrapper>
+          {/* 키워드 표시 */}
+          {keywords?.map((keyword) => {
+            return (
+              <div
+                className="keyword"
+                role="button"
+                key={uuidv4()}
+                aria-hidden="true"
+                onClick={(e) => deleteKeyword(e)}
+              >
+                {keyword}
+              </div>
+            );
+          })}
+
+          {/* 키워드 입력 */}
+          <input
+            type="text"
+            className="keyword_input"
+            spellCheck={false}
+            placeholder="키워드를 입력하세요"
+            value={keywordValue}
+            onChange={(e) => setKeywordValue(e.currentTarget.value)}
+            onKeyDown={(e) => addKeyword(e)}
+          />
+          <div className="notifiation" />
+        </KeywordsWrapper>
+
+        {/* 본문 */}
+        <ContentWrapper>
+          <textarea
+            placeholder="내용을 작성해주세요."
+            className="content_input"
+            value={content}
+            spellCheck={false}
+            onChange={(e) => setContent(e.target.value)}
+          />
+        </ContentWrapper>
+
+        {/* 작성 필드 안내 */}
+        <Notification>
+          <div className="alert_msg">
+            {!title && !content ? '제목과 내용을 작성해주세요.' : null}
+          </div>
+          <div className="alert_msg">
+            {title && !content ? '내용을 작성해주세요.' : null}
+          </div>
+          <div className="alert_msg">
+            {!title && content ? '제목을 작성해주세요.' : null}
+          </div>
+        </Notification>
+
+        {/* 노트 추가 버튼 */}
+        {title && content ? (
+          <AddBtn type="button" onClick={() => setModalOpen(true)}>
+            수정완료
+          </AddBtn>
+        ) : (
+          <DisabledBtn>수정완료</DisabledBtn>
+        )}
+      </Container>
+    </>
   );
 }
 
