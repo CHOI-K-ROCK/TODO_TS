@@ -1,6 +1,5 @@
 # memoryTodo
 ![image](https://user-images.githubusercontent.com/75164778/177763144-50cbde3e-94b2-4e78-8f14-305a8297cc73.png)
-![image](https://user-images.githubusercontent.com/75164778/177763353-6ead5e6b-4368-4d0e-ba85-6937e27cb7a3.png)
 
 - Typescript 와 Redux 를 이용한 웹 TODO 어플리케이션 입니다.
 
