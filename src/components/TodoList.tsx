@@ -5,9 +5,9 @@ import { BsFillTrashFill } from 'react-icons/bs';
 import { useDispatch, useSelector } from 'react-redux';
 import { todosActions } from 'modules/todos';
 
-import Done from './Done';
-import Todo from './Todo';
-import Input from './Input';
+import Done from './Todo/Done';
+import Todo from './Todo/Todo';
+import Input from './Todo/Input';
 
 const Container = styled.section`
   width: 100%;

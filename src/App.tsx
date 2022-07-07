@@ -10,8 +10,8 @@ import { todosActions } from 'modules/todos';
 import { notesActions } from 'modules/memory';
 
 import MenuBar from 'components/MenuBar';
-import TodoList from 'components/Todo/TodoList';
-import Memory from 'components/Memory/Memory';
+import TodoList from 'components/TodoList';
+import Memory from 'components/Memory';
 
 const GlobalStyles = createGlobalStyle`
     ${reset}
