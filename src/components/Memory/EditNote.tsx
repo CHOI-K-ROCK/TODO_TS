@@ -13,7 +13,13 @@ const Container = styled.section`
   flex-direction: column;
   justify-content: center;
 
+  box-sizing: border-box;
   padding: 30px;
+
+  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.2);
+
+  border: 1px solid #eee;
+  border-radius: 5px;
 
   .close_btn {
     display: grid;

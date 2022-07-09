@@ -25,7 +25,8 @@ const FunctionBar = styled.div`
   justify-content: space-between;
   gap: 10px;
 
-  height: 40px;
+  height: max-content;
+  min-height: 40px;
 
   margin-bottom: 30px;
 
@@ -35,12 +36,11 @@ const FunctionBar = styled.div`
     position: relative;
     display: flex;
 
-    height: 2.5rem;
-
     /* 인풋 */
     .search_bar {
       width: 100%;
       min-width: 300px;
+      height: 40px;
 
       padding-left: 10px;
       padding-right: 40px;
@@ -105,6 +105,11 @@ const FunctionBar = styled.div`
         color: #fff;
       }
     }
+  }
+
+  @media (max-width: 1200px) {
+    flex-direction: column;
+    margin-bottom: 10px;
   }
 `;
 
@@ -186,11 +191,6 @@ const ContentsWrapper = styled.div`
 
     box-sizing: border-box;
 
-    border: 1px solid #eee;
-
-    border-radius: 5px;
-    box-shadow: 0 3px 3px rgba(0, 0, 0, 0.2);
-
     animation: rise 0.3s;
 
     @keyframes rise {
@@ -203,6 +203,20 @@ const ContentsWrapper = styled.div`
         opacity: 1;
         transform: translateY(0);
       }
+    }
+  }
+
+  @media (max-width: 1200px) {
+    .contents_wrapper {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+
+      width: 90vw;
+      min-height: auto;
+      z-index: 1;
+      background-color: #fff;
     }
   }
 `;
@@ -227,12 +241,12 @@ function Memory(): JSX.Element {
     content: '',
   });
   const [searchValue, setSearchValue] = useState<string>('');
-  const [isShowRandomNote, setShowRandomNote] = useState<boolean>(false);
+  const [randomNoteOpen, setRandomNoteOpen] = useState<boolean>(false);
   const [alertModalOpen, setAlertModalOpen] = useState<boolean>(false);
 
   const randomNoteBtnHandler = () => {
     if (notesSlice.length) {
-      setShowRandomNote(true);
+      setRandomNoteOpen(true);
     } else {
       setAlertModalOpen(true);
     }
@@ -241,7 +255,7 @@ function Memory(): JSX.Element {
   return (
     <>
       {/* 랜덤 노트 표시 */}
-      {isShowRandomNote && <RandomNote setShowRandomNote={setShowRandomNote} />}
+      {randomNoteOpen && <RandomNote setRandomNoteOpen={setRandomNoteOpen} />}
       {alertModalOpen && (
         <Modal
           msg="작성된 노트가 없습니다."

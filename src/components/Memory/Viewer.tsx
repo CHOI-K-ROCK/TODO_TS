@@ -12,8 +12,14 @@ const Container = styled.section`
   position: relative;
   min-height: 680px;
   max-height: max-content;
+
   box-sizing: border-box;
   padding: 30px;
+
+  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.2);
+
+  border: 1px solid #eee;
+  border-radius: 5px;
 
   .content {
     white-space: pre-wrap;

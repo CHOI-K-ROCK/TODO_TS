@@ -1,7 +1,7 @@
 import { notesActions } from 'modules/memory';
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -10,8 +10,14 @@ const Container = styled.section`
   display: flex;
   flex-direction: column;
   justify-content: center;
+
   box-sizing: border-box;
   padding: 30px;
+
+  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.2);
+
+  border: 1px solid #eee;
+  border-radius: 5px;
 
   .close_btn {
     display: grid;
