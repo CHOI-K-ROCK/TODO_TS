@@ -24,6 +24,10 @@ const GlobalStyles = createGlobalStyle`
       color: #000;
     }
 
+    button {
+      color: #000;
+    }
+
 
   `;
 

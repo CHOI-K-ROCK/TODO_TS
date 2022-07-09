@@ -13,7 +13,13 @@ const Container = styled.section`
   flex-direction: column;
   justify-content: center;
 
+  box-sizing: border-box;
   padding: 30px;
+
+  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.2);
+
+  border: 1px solid #eee;
+  border-radius: 5px;
 
   .close_btn {
     display: grid;
@@ -246,7 +252,8 @@ function EditNote({
   const [content, setContent] = useState<string>('');
 
   const [keywordValue, setKeywordValue] = useState<string>('');
-  const [isModalOpen, setModalOpen] = useState<boolean>(false);
+
+  const [isEditDoneModalOpen, setEditDoneModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
     setId(currentNote.id);
@@ -295,7 +302,7 @@ function EditNote({
 
   return (
     <>
-      {isModalOpen && (
+      {isEditDoneModalOpen && (
         <Modal msg="수정이 완료되었습니다." applyFn={editNote} type="single" />
       )}
       <Container>
@@ -376,7 +383,7 @@ function EditNote({
 
         {/* 노트 추가 버튼 */}
         {title && content ? (
-          <AddBtn type="button" onClick={() => setModalOpen(true)}>
+          <AddBtn type="button" onClick={() => setEditDoneModalOpen(true)}>
             수정완료
           </AddBtn>
         ) : (

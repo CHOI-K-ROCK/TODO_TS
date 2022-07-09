@@ -11,6 +11,10 @@ const Container = styled.section`
     font-size: 1.2rem;
     color: #777;
   }
+
+  @media (max-width: 1200px) {
+    display: none;
+  }
 `;
 
 function DefaultPage(): JSX.Element {
