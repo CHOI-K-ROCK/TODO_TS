@@ -264,7 +264,7 @@ const ButtonWrapper = styled.div`
 `;
 
 interface IProps {
-  setShowRandomNote: React.Dispatch<React.SetStateAction<boolean>>;
+  setRandomNoteOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 interface INote {
@@ -274,7 +274,7 @@ interface INote {
   content: string;
 }
 
-function RandomNote({ setShowRandomNote }: IProps): JSX.Element {
+function RandomNote({ setRandomNoteOpen }: IProps): JSX.Element {
   // 전역상태 불러오기
   const notesSlice = useSelector(
     (state: { notesSlice: { notes: INote[] } }) => {
@@ -321,7 +321,7 @@ function RandomNote({ setShowRandomNote }: IProps): JSX.Element {
           <button
             type="button"
             className="close_btn"
-            onClick={() => setShowRandomNote(false)}
+            onClick={() => setRandomNoteOpen(false)}
           >
             ✕
           </button>

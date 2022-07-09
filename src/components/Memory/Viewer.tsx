@@ -12,8 +12,14 @@ const Container = styled.section`
   position: relative;
   min-height: 680px;
   max-height: max-content;
+
   box-sizing: border-box;
   padding: 30px;
+
+  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.2);
+
+  border: 1px solid #eee;
+  border-radius: 5px;
 
   .content {
     white-space: pre-wrap;
@@ -181,7 +187,7 @@ function Viewer({ note }: { note: INote }): JSX.Element {
   const dispatch = useDispatch();
   const nav = useNavigate();
 
-  const [isModalOpen, setModalOpen] = useState<boolean>(false);
+  const [isDeleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
     if (!note.id) {
@@ -207,11 +213,11 @@ function Viewer({ note }: { note: INote }): JSX.Element {
 
   return (
     <>
-      {isModalOpen && (
+      {isDeleteModalOpen && (
         <Modal
           msg="노트를 삭제하시겠습니까?"
           applyFn={apply}
-          dismissFn={() => setModalOpen(false)}
+          dismissFn={() => setDeleteModalOpen(false)}
           type="double"
         />
       )}
@@ -236,7 +242,7 @@ function Viewer({ note }: { note: INote }): JSX.Element {
             <button
               type="button"
               className="delete"
-              onClick={() => setModalOpen(true)}
+              onClick={() => setDeleteModalOpen(true)}
             >
               <DeleteIcon />
             </button>

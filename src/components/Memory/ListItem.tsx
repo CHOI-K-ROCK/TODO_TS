@@ -144,7 +144,7 @@ function ListItem({
   const nav = useNavigate();
   const dispatch = useDispatch();
 
-  const [isModalOpen, setModalOpen] = useState<boolean>(false);
+  const [isDeleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
 
   const applyFn = () => {
     dispatch(notesActions.deleteNote({ id }));
@@ -158,18 +158,18 @@ function ListItem({
 
   return (
     <>
-      {isModalOpen && (
+      {isDeleteModalOpen && (
         <Modal
           msg="노트를 삭제하시겠습니까?"
           applyFn={() => applyFn()}
-          dismissFn={() => setModalOpen(false)}
+          dismissFn={() => setDeleteModalOpen(false)}
           type="double"
         />
       )}
       <Item onClick={listClickHandler}>
         <div className="title_wrapper">
           <div className="title">{title}</div>
-          <button type="button" onClick={() => setModalOpen(true)}>
+          <button type="button" onClick={() => setDeleteModalOpen(true)}>
             ✕
           </button>
         </div>
