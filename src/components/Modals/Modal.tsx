@@ -1,4 +1,6 @@
+import { modalActions } from 'modules/modal';
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
 const Container = styled.section`
@@ -95,26 +97,22 @@ const Overlay = styled.div`
 `;
 
 interface IProps {
-  msg?: string;
-  type: 'single' | 'double';
-  applyFn: () => void;
-  dismissFn?: () => void;
+  msg?: string | null;
+  type: 'single' | 'double' | null;
+  applyFn: () => void | null;
 }
 
-function Modal({ msg, type, applyFn, dismissFn }: IProps): JSX.Element {
+function Modal({ msg, type, applyFn }: IProps): JSX.Element {
+  const dispatch = useDispatch();
   const apply = () => {
     applyFn();
-
-    if (dismissFn) {
-      dismissFn();
-    }
+    dispatch(modalActions.closeModal());
   };
 
   const dismiss = () => {
-    if (dismissFn) {
-      dismissFn();
-    }
+    dispatch(modalActions.closeModal());
   };
+
   return (
     <Container>
       <Overlay>
@@ -143,7 +141,6 @@ function Modal({ msg, type, applyFn, dismissFn }: IProps): JSX.Element {
 
 Modal.defaultProps = {
   msg: '메시지를 입력하세요.',
-  dismissFn: null,
 };
 
 export default Modal;

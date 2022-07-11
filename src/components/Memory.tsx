@@ -127,7 +127,7 @@ const ContentsWrapper = styled.div`
 
     min-width: 300px;
     height: 680px;
-    overflow: scroll;
+    overflow-y: auto;
 
     /* 아무것도 없는 경우 */
     .empty_list {
@@ -213,7 +213,7 @@ const ContentsWrapper = styled.div`
       left: 50%;
       transform: translate(-50%, -50%);
 
-      width: 90vw;
+      width: min(500px, 90vw);
       min-height: auto;
       z-index: 1;
       background-color: #fff;

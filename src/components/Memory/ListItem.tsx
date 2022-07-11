@@ -1,5 +1,6 @@
 import Modal from 'components/Modals/Modal';
 import { notesActions } from 'modules/memory';
+import { modalActions } from 'modules/modal';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -144,52 +145,50 @@ function ListItem({
   const nav = useNavigate();
   const dispatch = useDispatch();
 
-  const [isDeleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
-
-  const applyFn = () => {
-    dispatch(notesActions.deleteNote({ id }));
-    nav('/memory');
+  const listClickHandler = (e: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
+    if (e.currentTarget === e.target) {
+      setCurrentNote(note);
+      nav('/memory/view');
+    }
   };
 
-  const listClickHandler = () => {
-    setCurrentNote(note);
-    nav('/memory/view');
+  const openDeleteModal = () => {
+    dispatch(
+      modalActions.openModal({
+        msg: '노트를 삭제하시겠습니까?',
+        type: 'double',
+        applyFn: () => {
+          dispatch(notesActions.deleteNote({ id }));
+          nav('/memory');
+        },
+      })
+    );
   };
 
   return (
-    <>
-      {isDeleteModalOpen && (
-        <Modal
-          msg="노트를 삭제하시겠습니까?"
-          applyFn={() => applyFn()}
-          dismissFn={() => setDeleteModalOpen(false)}
-          type="double"
-        />
-      )}
-      <Item onClick={listClickHandler}>
-        <div className="title_wrapper">
-          <div className="title">{title}</div>
-          <button type="button" onClick={() => setDeleteModalOpen(true)}>
-            ✕
-          </button>
-        </div>
-        <KeywordsWrapper>
-          {keywords.length ? (
-            keywords?.map((el, idx) => {
-              return (
-                // eslint-disable-next-line react/no-array-index-key
-                <div className="keyword" key={idx}>
-                  {el}
-                </div>
-              );
-            })
-          ) : (
-            <div className="keyword empty">키워드 없음</div>
-          )}
-        </KeywordsWrapper>
-        <pre className="content">{content}</pre>
-      </Item>
-    </>
+    <Item onClick={(e) => listClickHandler(e)}>
+      <div className="title_wrapper">
+        <div className="title">{title}</div>
+        <button type="button" onClick={openDeleteModal}>
+          ✕
+        </button>
+      </div>
+      <KeywordsWrapper>
+        {keywords.length ? (
+          keywords?.map((el, idx) => {
+            return (
+              // eslint-disable-next-line react/no-array-index-key
+              <div className="keyword" key={idx}>
+                {el}
+              </div>
+            );
+          })
+        ) : (
+          <div className="keyword empty">키워드 없음</div>
+        )}
+      </KeywordsWrapper>
+      <pre className="content">{content}</pre>
+    </Item>
   );
 }
 

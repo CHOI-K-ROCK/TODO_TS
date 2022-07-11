@@ -12,6 +12,7 @@ import { notesActions } from 'modules/memory';
 import MenuBar from 'components/MenuBar';
 import TodoList from 'components/TodoList';
 import Memory from 'components/Memory';
+import Modal from 'components/Modals/Modal';
 
 const GlobalStyles = createGlobalStyle`
     ${reset}
@@ -95,6 +96,14 @@ interface INote {
   content: string;
 }
 
+interface IModal {
+  isOpen: boolean;
+  msg: 'string' | null;
+  type: 'double' | 'single' | null;
+  applyFn: any;
+  dismissFn?: any;
+}
+
 function App(): JSX.Element {
   const nav = useNavigate();
   const [todoList, setTodoList] = useState<ITodo[]>([]);
@@ -109,6 +118,10 @@ function App(): JSX.Element {
 
   const notesSlice = useSelector(
     (state: { notesSlice: { notes: INote[] } }) => state.notesSlice.notes
+  );
+
+  const modalSlice = useSelector(
+    (state: { modalSlice: IModal }) => state.modalSlice
   );
 
   const dispatch = useDispatch();
@@ -139,6 +152,13 @@ function App(): JSX.Element {
 
   return (
     <>
+      {modalSlice.isOpen && (
+        <Modal
+          msg={modalSlice.msg}
+          type={modalSlice.type}
+          applyFn={modalSlice.applyFn}
+        />
+      )}
       <Container>
         <GlobalStyles />
         <InnerContainer>
