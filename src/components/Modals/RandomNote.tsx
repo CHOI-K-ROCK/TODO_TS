@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { BsCaretRightFill as LeftIcon } from 'react-icons/bs';
@@ -285,6 +285,14 @@ function RandomNote({ setRandomNoteOpen }: IProps): JSX.Element {
   // 공용 함수 작성
   function getRandomIdx(num: number) {
     return Math.floor(Math.random() * num);
+  }
+
+  function getRandomIdxArr(num: number) {
+    const idxArr = Array(num)
+      .fill(null)
+      .map((el, idx) => idx);
+
+    return idxArr.sort(() => Math.random() - 0.5);
   }
 
   // 상태 작성

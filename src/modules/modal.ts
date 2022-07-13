@@ -24,8 +24,6 @@ const modalSlice = createSlice({
       state.msg = action.payload.msg;
       state.type = action.payload.type;
       state.applyFn = action.payload.applyFn;
-
-      console.log(state);
     },
     closeModal(state: IModal) {
       state.isOpen = false;

@@ -44,8 +44,7 @@ const Container = styled.div`
 `;
 
 const InnerContainer = styled.section`
-  width: 60vw;
-  max-width: 1000px;
+  width: min(60vw, 1000px);
   height: max-content;
 
   display: flex;
@@ -53,7 +52,7 @@ const InnerContainer = styled.section`
   flex-direction: column;
 
   @media screen and (max-width: 750px) {
-    width: 80%;
+    width: 80vw;
   }
 `;
 
@@ -65,6 +64,10 @@ const Title = styled.section`
   font-size: 3rem;
   text-align: center;
   letter-spacing: 0.1rem;
+
+  @media screen and (max-width: 640px) {
+    font-size: 2rem;
+  }
 `;
 
 const Footer = styled.div`

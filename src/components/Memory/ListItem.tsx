@@ -145,14 +145,15 @@ function ListItem({
   const nav = useNavigate();
   const dispatch = useDispatch();
 
-  const listClickHandler = (e: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
-    if (e.currentTarget === e.target) {
-      setCurrentNote(note);
-      nav('/memory/view');
-    }
+  const listClickHandler = () => {
+    setCurrentNote(note);
+    nav('/memory/view');
   };
 
-  const openDeleteModal = () => {
+  const openDeleteModal = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.stopPropagation();
     dispatch(
       modalActions.openModal({
         msg: '노트를 삭제하시겠습니까?',
@@ -166,10 +167,10 @@ function ListItem({
   };
 
   return (
-    <Item onClick={(e) => listClickHandler(e)}>
+    <Item onClick={listClickHandler}>
       <div className="title_wrapper">
         <div className="title">{title}</div>
-        <button type="button" onClick={openDeleteModal}>
+        <button type="button" onClick={(e) => openDeleteModal(e)}>
           ✕
         </button>
       </div>
