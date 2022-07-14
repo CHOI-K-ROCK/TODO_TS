@@ -127,7 +127,7 @@ const ContentsWrapper = styled.div`
 
     min-width: 300px;
     height: 680px;
-    overflow: scroll;
+    overflow-y: auto;
 
     /* 아무것도 없는 경우 */
     .empty_list {
@@ -213,7 +213,7 @@ const ContentsWrapper = styled.div`
       left: 50%;
       transform: translate(-50%, -50%);
 
-      width: 90vw;
+      width: min(500px, 90vw);
       min-height: auto;
       z-index: 1;
       background-color: #fff;
@@ -244,6 +244,14 @@ function Memory(): JSX.Element {
   const [randomNoteOpen, setRandomNoteOpen] = useState<boolean>(false);
   const [alertModalOpen, setAlertModalOpen] = useState<boolean>(false);
 
+  const getRandomIdxArr = (num: number) => {
+    const idxArr = Array(num)
+      .fill(null)
+      .map((el, idx) => idx);
+
+    return idxArr.sort(() => Math.random() - 0.5);
+  };
+
   const randomNoteBtnHandler = () => {
     if (notesSlice.length) {
       setRandomNoteOpen(true);
@@ -255,7 +263,12 @@ function Memory(): JSX.Element {
   return (
     <>
       {/* 랜덤 노트 표시 */}
-      {randomNoteOpen && <RandomNote setRandomNoteOpen={setRandomNoteOpen} />}
+      {randomNoteOpen && (
+        <RandomNote
+          setRandomNoteOpen={setRandomNoteOpen}
+          idxArr={getRandomIdxArr(notesSlice.length)}
+        />
+      )}
       {alertModalOpen && (
         <Modal
           msg="작성된 노트가 없습니다."
