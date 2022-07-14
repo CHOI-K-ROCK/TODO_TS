@@ -1,7 +1,10 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { BsCaretRightFill as LeftIcon } from 'react-icons/bs';
+import {
+  BsCaretRightFill as RightIcon,
+  BsCaretLeftFill as LeftIcon,
+} from 'react-icons/bs';
 
 const Container = styled.section`
   position: fixed;
@@ -91,19 +94,32 @@ const CloseBtnWrapper = styled.div`
   }
 `;
 const TitleWrapper = styled.div`
+  position: relative;
   width: 100%;
   margin-top: 20px;
   margin-bottom: 20px;
 
-  h3 {
-    margin-bottom: 15px;
-    font-size: 1.3rem;
-    font-weight: bold;
+  .wrapper {
+    display: flex;
+    align-items: flex-end;
 
+    margin-bottom: 15px;
     padding: 15px 0;
 
     border-top: 1px solid #ddd;
     border-bottom: 1px solid #ddd;
+
+    h3 {
+      font-size: 1.3rem;
+      font-weight: bold;
+    }
+
+    .indicator {
+      margin-left: 10px;
+      font-size: 0.9rem;
+
+      color: #777;
+    }
   }
 
   .question {
@@ -240,6 +256,7 @@ const ContentWrapper = styled.div`
 const ButtonWrapper = styled.div`
   display: flex;
   justify-content: flex-end;
+  gap: 10px;
 
   width: 100%;
 
@@ -265,6 +282,7 @@ const ButtonWrapper = styled.div`
 
 interface IProps {
   setRandomNoteOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  idxArr: number[];
 }
 
 interface INote {
@@ -274,7 +292,7 @@ interface INote {
   content: string;
 }
 
-function RandomNote({ setRandomNoteOpen }: IProps): JSX.Element {
+function RandomNote({ setRandomNoteOpen, idxArr }: IProps): JSX.Element {
   // 전역상태 불러오기
   const notesSlice = useSelector(
     (state: { notesSlice: { notes: INote[] } }) => {
@@ -282,23 +300,11 @@ function RandomNote({ setRandomNoteOpen }: IProps): JSX.Element {
     }
   );
 
-  // 공용 함수 작성
-  function getRandomIdx(num: number) {
-    return Math.floor(Math.random() * num);
-  }
-
-  function getRandomIdxArr(num: number) {
-    const idxArr = Array(num)
-      .fill(null)
-      .map((el, idx) => idx);
-
-    return idxArr.sort(() => Math.random() - 0.5);
-  }
-
   // 상태 작성
   const [currentQuestion, setCurrentQuestion] = useState<INote>(
-    notesSlice[getRandomIdx(notesSlice.length)]
+    notesSlice[idxArr[0]]
   );
+  const [currentQuestionIdx, setCurrentQuestionIdx] = useState<number>(0);
   const [isOpenKeywords, setOpenKeywords] = useState<boolean>(false);
   const [isOpenContent, setOpenContent] = useState<boolean>(false);
 
@@ -319,6 +325,23 @@ function RandomNote({ setRandomNoteOpen }: IProps): JSX.Element {
     setOpenContent(!isOpenContent);
   };
 
+  const handleNextBtn = () => {
+    if (currentQuestionIdx < notesSlice.length - 1) {
+      setCurrentQuestionIdx(currentQuestionIdx + 1);
+    }
+  };
+
+  const handlePrevBtn = () => {
+    if (currentQuestionIdx > 0) {
+      setCurrentQuestionIdx(currentQuestionIdx - 1);
+    }
+  };
+
+  useEffect(() => {
+    setCurrentQuestion(notesSlice[idxArr[currentQuestionIdx]]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentQuestionIdx]);
+
   return (
     <Container>
       {/* 총 질문을 스택에 쌓이게 해서 구현 해보기 */}
@@ -336,7 +359,12 @@ function RandomNote({ setRandomNoteOpen }: IProps): JSX.Element {
         </CloseBtnWrapper>
         {/* 타이틀  */}
         <TitleWrapper>
-          <h3>질문</h3>
+          <div className="wrapper">
+            <h3>질문</h3>
+            <div className="indicator">
+              {currentQuestionIdx + 1} / {notesSlice.length}
+            </div>
+          </div>
           <p className="question">{currentQuestion.title}</p>
         </TitleWrapper>
 
@@ -383,14 +411,11 @@ function RandomNote({ setRandomNoteOpen }: IProps): JSX.Element {
           </pre>
         </ContentWrapper>
         <ButtonWrapper>
-          <button
-            type="button"
-            className="next_btn"
-            onClick={() =>
-              setCurrentQuestion(notesSlice[getRandomIdx(notesSlice.length)])
-            }
-          >
+          <button type="button" className="next_btn" onClick={handlePrevBtn}>
             <LeftIcon />
+          </button>
+          <button type="button" className="next_btn" onClick={handleNextBtn}>
+            <RightIcon />
           </button>
         </ButtonWrapper>
       </Overlay>

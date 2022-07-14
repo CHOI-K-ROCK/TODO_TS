@@ -244,6 +244,14 @@ function Memory(): JSX.Element {
   const [randomNoteOpen, setRandomNoteOpen] = useState<boolean>(false);
   const [alertModalOpen, setAlertModalOpen] = useState<boolean>(false);
 
+  const getRandomIdxArr = (num: number) => {
+    const idxArr = Array(num)
+      .fill(null)
+      .map((el, idx) => idx);
+
+    return idxArr.sort(() => Math.random() - 0.5);
+  };
+
   const randomNoteBtnHandler = () => {
     if (notesSlice.length) {
       setRandomNoteOpen(true);
@@ -255,7 +263,12 @@ function Memory(): JSX.Element {
   return (
     <>
       {/* 랜덤 노트 표시 */}
-      {randomNoteOpen && <RandomNote setRandomNoteOpen={setRandomNoteOpen} />}
+      {randomNoteOpen && (
+        <RandomNote
+          setRandomNoteOpen={setRandomNoteOpen}
+          idxArr={getRandomIdxArr(notesSlice.length)}
+        />
+      )}
       {alertModalOpen && (
         <Modal
           msg="작성된 노트가 없습니다."
