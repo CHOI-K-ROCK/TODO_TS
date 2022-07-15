@@ -23,13 +23,13 @@ const GlobalStyles = createGlobalStyle`
 
     a {
       color: #000;
+      user-select: none;
     }
 
     button {
       color: #000;
+      user-select: none;
     }
-
-
   `;
 
 const Container = styled.div`
@@ -65,12 +65,14 @@ const Title = styled.section`
   text-align: center;
   letter-spacing: 0.1rem;
 
+  user-select: none;
+
   @media screen and (max-width: 640px) {
     font-size: 2rem;
   }
 `;
 
-const Footer = styled.div`
+const Info = styled.div`
   position: absolute;
   right: 40px;
   top: 40px;
@@ -178,7 +180,7 @@ function App(): JSX.Element {
           </Routes>
         </InnerContainer>
       </Container>
-      <Footer>
+      <Info>
         <div className="icon_wrapper">
           <GoPerson
             className="icon"
@@ -196,7 +198,7 @@ function App(): JSX.Element {
             }
           />
         </div>
-      </Footer>
+      </Info>
     </>
   );
 }

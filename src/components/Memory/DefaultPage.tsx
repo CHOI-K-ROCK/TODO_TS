@@ -10,6 +10,12 @@ const Container = styled.section`
 
     font-size: 1.2rem;
     color: #777;
+
+    border: 1px solid #eee;
+    border-radius: 5px;
+    box-shadow: 0 3px 3px rgba(0, 0, 0, 0.2);
+
+    user-select: none;
   }
 
   @media (max-width: 1200px) {

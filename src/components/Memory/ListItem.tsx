@@ -26,6 +26,8 @@ const Item = styled.li`
 
   animation: rise 0.3s;
 
+  user-select: none;
+
   @keyframes rise {
     0% {
       opacity: 0;
@@ -44,6 +46,7 @@ const Item = styled.li`
     background-color: #f8f8f8;
   }
   .title_wrapper {
+    width: 100%;
     position: relative;
 
     .title {
@@ -64,6 +67,8 @@ const Item = styled.li`
       position: absolute;
       top: -2px;
       right: -5px;
+
+      padding: 0;
 
       background: none;
       border: none;
