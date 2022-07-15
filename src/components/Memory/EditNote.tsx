@@ -56,6 +56,8 @@ const Title = styled.h2`
   font-size: 1.3rem;
   font-weight: bold;
   margin-bottom: 20px;
+
+  user-select: none;
 `;
 
 const NoteTitleWrapper = styled.div`

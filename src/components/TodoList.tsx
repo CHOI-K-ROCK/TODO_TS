@@ -35,6 +35,8 @@ const Container = styled.section`
 
     font-size: 1.2rem;
     text-align: center;
+
+    user-select: none;
   }
 
   .list_wrapper {

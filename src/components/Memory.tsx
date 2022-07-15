@@ -135,6 +135,8 @@ const ContentsWrapper = styled.div`
       display: grid;
       place-items: center;
 
+      user-select: none;
+
       .note_not_found {
         display: flex;
         flex-direction: column;

@@ -76,11 +76,11 @@ function MenuBar(): JSX.Element {
   const todoBtn = useRef<HTMLAnchorElement>(null);
   const memoryBtn = useRef<HTMLAnchorElement>(null);
 
-  const [currentPath, setCurrentPath] = useState<string>('');
+  const [currentPath, setCurrentPath] = useState<string>('todo');
 
   useEffect(() => {
     setCurrentPath(window.location.pathname.split('/')[1]);
-  }, [currentPath]);
+  }, []);
   // 새로고침 혹은 페이지 접속 시 현재 경로를 가져온다.
 
   useEffect(() => {
@@ -100,13 +100,13 @@ function MenuBar(): JSX.Element {
         <IndicatorWrapper currentPath={currentPath}>
           <div className="indicator" />
         </IndicatorWrapper>
-        <SLink to="todo" ref={todoBtn} onClick={() => setCurrentPath('/todo')}>
+        <SLink to="todo" ref={todoBtn} onClick={() => setCurrentPath('todo')}>
           todo
         </SLink>
         <SLink
           to="memory"
           ref={memoryBtn}
-          onClick={() => setCurrentPath('/memory')}
+          onClick={() => setCurrentPath('memory')}
         >
           memory
         </SLink>
