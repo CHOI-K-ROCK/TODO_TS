@@ -6,12 +6,11 @@
 - 서버를 이용하지 않고, localStorage 를 이용하여 서버를 대신하였습니다.
 
 - 암기노트 기능을 구현하였습니다.
-![image](https://user-images.githubusercontent.com/75164778/177763548-dfcbc240-1694-4909-975d-a2efab2c339a.png)
+![image](https://user-images.githubusercontent.com/75164778/179137336-bedd0a14-8661-472d-aea8-e26ba69ea320.png)
+
   - 작성한 질문을 무작위로 사용자에게 보여주고, 필요하에 키워드 및 본문을 확인 할 수 있습니다.
 
-- Modal UI를 구현 하였습니다.
-
-- 반응형 디자인을 적용 예정 입니다.
+- Modal UI 및 반응형 웹사이트를 구현 하였습니다.
 
 ### Stack
 
