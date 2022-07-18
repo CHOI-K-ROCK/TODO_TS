@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { BsSearch as SearchIcon, BsPlus as PlusIcon } from 'react-icons/bs';
+import { NotesMeta } from 'metadatas/metadatas';
 
 import AddNote from './Memory/AddNote';
 import DefaultPage from './Memory/DefaultPage';
@@ -264,6 +265,7 @@ function Memory(): JSX.Element {
 
   return (
     <>
+      <NotesMeta />
       {/* 랜덤 노트 표시 */}
       {randomNoteOpen && (
         <RandomNote
