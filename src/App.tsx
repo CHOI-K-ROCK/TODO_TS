@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
-import { GoPerson, GoMarkGithub } from 'react-icons/go';
 import reset from 'styled-reset';
+import { GoPerson, GoMarkGithub } from 'react-icons/go';
+import { AppMetas } from 'metadatas/metadatas';
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -157,6 +158,7 @@ function App(): JSX.Element {
 
   return (
     <>
+      <AppMetas />
       {modalSlice.isOpen && (
         <Modal
           msg={modalSlice.msg}
