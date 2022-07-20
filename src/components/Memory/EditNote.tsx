@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useDispatch } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 
-import { notesActions } from 'modules/memory';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import Modal from 'components/Modals/Modal';
+
+import { notesActions } from 'modules/memory';
 import { modalActions } from 'modules/modal';
 
 const Container = styled.section`

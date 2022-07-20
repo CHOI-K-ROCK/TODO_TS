@@ -107,17 +107,12 @@ interface IModal {
   msg: 'string' | null;
   type: 'double' | 'single' | null;
   applyFn: any;
-  dismissFn?: any;
 }
 
 function App(): JSX.Element {
   const nav = useNavigate();
   const [todoList, setTodoList] = useState<ITodo[]>([]);
-  // const [todoList, setTodoList] = useState<
-  //   { id: string; done: boolean; content: string }[]
-  // >([]);
 
-  // Redux 적용 예정이지만 일단 기본적인 내용은 전부 완성 뒤에 적용시키기!
   const todoSlice = useSelector(
     (state: { todosSlice: { todos: ITodo[] } }) => state.todosSlice.todos
   );

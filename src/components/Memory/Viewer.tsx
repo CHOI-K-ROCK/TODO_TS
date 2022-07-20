@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { BsPen as EditIcon, BsTrash as DeleteIcon } from 'react-icons/bs';
+
 import { useDispatch } from 'react-redux';
-import { notesActions } from 'modules/memory';
 import { useNavigate } from 'react-router-dom';
-import Modal from 'components/Modals/Modal';
+
+import { notesActions } from 'modules/memory';
 import { modalActions } from 'modules/modal';
 
 const Container = styled.section`

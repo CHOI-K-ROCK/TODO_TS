@@ -1,16 +1,19 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import React, { useEffect, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import { BsSearch as SearchIcon, BsPlus as PlusIcon } from 'react-icons/bs';
+
+import { useSelector } from 'react-redux';
+
 import { NotesMeta } from 'metadatas/metadatas';
 
-import AddNote from './Memory/AddNote';
 import DefaultPage from './Memory/DefaultPage';
-import EditNote from './Memory/EditNote';
 import ListItem from './Memory/ListItem';
 import Viewer from './Memory/Viewer';
+import AddNote from './Memory/AddNote';
+import EditNote from './Memory/EditNote';
+
 import Modal from './Modals/Modal';
 import RandomNote from './Modals/RandomNote';
 

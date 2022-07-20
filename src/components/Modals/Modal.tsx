@@ -1,7 +1,9 @@
-import { modalActions } from 'modules/modal';
 import React from 'react';
-import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
+
+import { useDispatch } from 'react-redux';
+
+import { modalActions } from 'modules/modal';
 
 const Container = styled.section`
   position: fixed;
@@ -19,7 +21,7 @@ const Container = styled.section`
     0% {
       opacity: 0;
     }
-    0% {
+    100% {
       opacity: 1;
     }
   }
@@ -47,7 +49,7 @@ const Overlay = styled.div`
 
   @keyframes rise {
     0% {
-      transform: translateY(-20px);
+      transform: translateY(20px);
       opacity: 0;
     }
     100% {
@@ -104,6 +106,7 @@ interface IProps {
 
 function Modal({ msg, type, applyFn }: IProps): JSX.Element {
   const dispatch = useDispatch();
+
   const apply = () => {
     applyFn();
     dispatch(modalActions.closeModal());
