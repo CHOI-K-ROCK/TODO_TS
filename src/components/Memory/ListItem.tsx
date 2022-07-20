@@ -1,10 +1,11 @@
-import Modal from 'components/Modals/Modal';
-import { notesActions } from 'modules/memory';
-import { modalActions } from 'modules/modal';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import styled from 'styled-components';
+
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
+
+import { notesActions } from 'modules/memory';
+import { modalActions } from 'modules/modal';
 
 const Item = styled.li`
   align-items: center;
