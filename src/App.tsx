@@ -153,7 +153,7 @@ function App(): JSX.Element {
   // 위 두 Effect Hook 으로 인해 서버없이도 브라우저에 저장된다.
 
   useEffect(() => {
-    if (window.location.pathname === '/') nav('/todo');
+    if (window.location.pathname === '/memory_todo') nav('/todo');
   }, [nav]);
 
   return (
