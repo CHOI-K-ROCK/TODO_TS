@@ -21,6 +21,6 @@
 
 ### Try it
 
-- 해당 프로젝트의 main 브랜치는 현재 AWS S3 을 통해 배포되고 있습니다.
+- 해당 프로젝트의 main 브랜치는 현재 Github-pages 를 통해 배포되고 있습니다.
 
-- [배포링크](http://memory-todo.s3-website.ap-northeast-2.amazonaws.com/todo)
+- [배포링크](https://choi-k-rock.github.io/memory_todo/)
