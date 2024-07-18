@@ -23,4 +23,4 @@
 
 - 해당 프로젝트의 main 브랜치는 현재 Github-pages 를 통해 배포되고 있습니다.
 
-- [배포링크](https://choi-k-rock.github.io/memory_todo/)
+- [배포링크](https://choi-k-rock.github.io/todo/)
