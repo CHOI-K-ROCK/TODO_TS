@@ -3,10 +3,11 @@ import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 
-import { notesActions } from 'modules/memory';
+import { notesActions } from 'modules/notes';
 import { useNavigate } from 'react-router-dom';
 
 import { modalActions } from 'modules/modal';
+import { INote } from 'types';
 
 const Container = styled.section`
   position: relative;
@@ -232,37 +233,28 @@ const DisabledBtn = styled(AddBtn)`
   }
 `;
 
-interface INote {
-  id: string;
-  title: string;
-  keywords: string[];
-  content: string;
-}
-
 function NoteEditor({
-  currentNote,
-  setCurrentNote,
+  note,
+  onEdit,
 }: {
-  currentNote: INote;
-  setCurrentNote: React.Dispatch<React.SetStateAction<INote>>;
+  note: INote;
+  onEdit: React.Dispatch<React.SetStateAction<INote>>;
 }): JSX.Element {
   const dispatch = useDispatch();
   const nav = useNavigate();
 
-  const [id, setId] = useState<string>('');
-  const [title, setTitle] = useState<string>('');
-  const [keywords, setKeywords] = useState<string[]>([]);
-  const [content, setContent] = useState<string>('');
+  const {
+    id: initialId,
+    content: initialContent,
+    keywords: initialKeywords,
+    title: initialTitle,
+  } = note;
+
+  const [title, setTitle] = useState<string>(initialTitle);
+  const [keywords, setKeywords] = useState<string[]>(initialKeywords);
+  const [content, setContent] = useState<string>(initialContent);
 
   const [keywordValue, setKeywordValue] = useState<string>('');
-
-  useEffect(() => {
-    setId(currentNote.id);
-    setTitle(currentNote.title);
-    setKeywords(currentNote.keywords);
-    setContent(currentNote.content);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const addKeyword = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (
@@ -288,29 +280,31 @@ function NoteEditor({
     );
   };
 
-  const editNote = () => {
-    dispatch(
-      notesActions.editNote({
-        id,
-        title,
-        keywords,
-        content,
-      })
-    );
-    setCurrentNote({ id, title, keywords, content });
-    nav('/memory/view');
-  };
-
   const openEditDoneModal = () => {
     dispatch(
       modalActions.openModal({
         msg: '수정이 완료되었습니다.',
         type: 'single',
         applyFn: () => {
-          editNote();
+          modalActions.closeModal();
         },
       })
     );
+  };
+
+  const onEditApply = () => {
+    dispatch(
+      notesActions.updateNote({
+        id: initialId,
+        title,
+        keywords,
+        content,
+      })
+    );
+    onEdit({ id: initialId, title, keywords, content });
+
+    openEditDoneModal();
+    nav('/memory/view');
   };
 
   return (
@@ -392,7 +386,7 @@ function NoteEditor({
 
       {/* 노트 추가 버튼 */}
       {title && content ? (
-        <AddBtn type="button" onClick={openEditDoneModal}>
+        <AddBtn type="button" onClick={onEditApply}>
           수정완료
         </AddBtn>
       ) : (

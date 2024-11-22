@@ -137,10 +137,7 @@ function MemoryTab(): JSX.Element {
               <Route
                 path="edit"
                 element={
-                  <NoteEditor
-                    currentNote={currentNote}
-                    setCurrentNote={setCurrentNote}
-                  />
+                  <NoteEditor note={currentNote} onEdit={setCurrentNote} />
                 }
               />
             </Routes>

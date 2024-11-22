@@ -77,7 +77,6 @@ function MenuBar(): JSX.Element {
   const memoryBtn = useRef<HTMLAnchorElement>(null);
 
   const [currentPath, setCurrentPath] = useState<string>('todo');
-
   useEffect(() => {
     setCurrentPath(window.location.pathname.split('/')[1]);
   }, []);

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { BsPen as EditIcon, BsTrash as DeleteIcon } from 'react-icons/bs';
 import { useDispatch } from 'react-redux';
-import { notesActions } from 'modules/memory';
+import { notesActions } from 'modules/notes';
 import { useNavigate } from 'react-router-dom';
 import Modal from 'components/modal/Modal';
 import { modalActions } from 'modules/modal';

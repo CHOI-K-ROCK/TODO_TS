@@ -141,7 +141,7 @@ function Todo({ content, id }: IProps): JSX.Element {
     if (!editValue) {
       setToggleEdit(false);
     } else {
-      dispatch(todosActions.editTodo({ id, content: editValue }));
+      dispatch(todosActions.updateTodo({ id, content: editValue }));
       setToggleEdit(false);
     }
   };

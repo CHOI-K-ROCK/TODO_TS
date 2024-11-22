@@ -1,5 +1,5 @@
 import Modal from 'components/modal/Modal';
-import { notesActions } from 'modules/memory';
+import { notesActions } from 'modules/notes';
 import { modalActions } from 'modules/modal';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
