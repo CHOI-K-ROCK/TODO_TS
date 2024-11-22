@@ -1,12 +1,12 @@
 {
   "files": {
-    "main.js": "/memory_todo/static/js/main.e47b7eb9.js",
+    "main.js": "/memory_todo/static/js/main.dfa4f52a.js",
     "static/js/787.bb66f437.chunk.js": "/memory_todo/static/js/787.bb66f437.chunk.js",
     "index.html": "/memory_todo/index.html",
-    "main.e47b7eb9.js.map": "/memory_todo/static/js/main.e47b7eb9.js.map",
+    "main.dfa4f52a.js.map": "/memory_todo/static/js/main.dfa4f52a.js.map",
     "787.bb66f437.chunk.js.map": "/memory_todo/static/js/787.bb66f437.chunk.js.map"
   },
   "entrypoints": [
-    "static/js/main.e47b7eb9.js"
+    "static/js/main.dfa4f52a.js"
   ]
 }
