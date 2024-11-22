@@ -1,7 +1,7 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 
-export function AppMetas(): JSX.Element {
+export function AppHelmet(): JSX.Element {
   return (
     <Helmet>
       <meta property="og:locale" content="ko_KR" />
@@ -37,7 +37,7 @@ export function AppMetas(): JSX.Element {
   );
 }
 
-export function TodoMetas(): JSX.Element {
+export function TodoHelmet(): JSX.Element {
   return (
     <Helmet>
       <meta property="og:locale" content="ko_KR" />
@@ -73,7 +73,7 @@ export function TodoMetas(): JSX.Element {
   );
 }
 
-export function NotesMeta(): JSX.Element {
+export function MemoryHelmet(): JSX.Element {
   return (
     <Helmet>
       <meta property="og:locale" content="ko_KR" />

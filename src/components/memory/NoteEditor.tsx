@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { notesActions } from 'modules/memory';
 import { useNavigate } from 'react-router-dom';
-import Modal from 'components/Modals/Modal';
+
 import { modalActions } from 'modules/modal';
 
 const Container = styled.section`
@@ -239,7 +239,7 @@ interface INote {
   content: string;
 }
 
-function EditNote({
+function NoteEditor({
   currentNote,
   setCurrentNote,
 }: {
@@ -402,4 +402,4 @@ function EditNote({
   );
 }
 
-export default EditNote;
+export default NoteEditor;

@@ -93,15 +93,13 @@ interface ITodo {
 interface IProps {
   content: ITodo;
   id: string;
-  todoList: ITodo[];
-  setTodoList: Dispatch<SetStateAction<ITodo[]>>;
 }
 // 현재 todoList 를 저장하는 App.tsx로 부터 TodoList.tsx -> Todo.tsx 까지 PropsDrilling 이 심한편
 // 리덕스를 적용시켜보는 것을 적극적으로 검토해보기.
 
 // ReduxToolkit 보단 일반 Redux 먼저 사용해보기!
 
-function Done({ content, id, todoList, setTodoList }: IProps): JSX.Element {
+function Done({ content, id }: IProps): JSX.Element {
   const dispatch = useDispatch();
   const deleteDone = () => {
     dispatch(todosActions.deleteTodo({ id }));

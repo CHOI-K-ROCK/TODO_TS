@@ -4,7 +4,7 @@ import { BsPen as EditIcon, BsTrash as DeleteIcon } from 'react-icons/bs';
 import { useDispatch } from 'react-redux';
 import { notesActions } from 'modules/memory';
 import { useNavigate } from 'react-router-dom';
-import Modal from 'components/Modals/Modal';
+import Modal from 'components/modal/Modal';
 import { modalActions } from 'modules/modal';
 
 const Container = styled.section`

@@ -1,4 +1,4 @@
-import Modal from 'components/Modals/Modal';
+import Modal from 'components/modal/Modal';
 import { notesActions } from 'modules/memory';
 import { modalActions } from 'modules/modal';
 import React, { useEffect, useState } from 'react';
@@ -139,19 +139,19 @@ interface INote {
   content: string;
 }
 
-function ListItem({
+function NoteListItem({
   note,
-  setCurrentNote,
+  onClick,
 }: {
   note: INote;
-  setCurrentNote: React.Dispatch<React.SetStateAction<INote>>;
+  onClick: React.Dispatch<React.SetStateAction<INote>>;
 }): JSX.Element {
   const { id, title, keywords, content } = note;
   const nav = useNavigate();
   const dispatch = useDispatch();
 
   const listClickHandler = () => {
-    setCurrentNote(note);
+    onClick(note);
     nav('/memory/view');
   };
 
@@ -198,4 +198,4 @@ function ListItem({
   );
 }
 
-export default ListItem;
+export default NoteListItem;

@@ -100,7 +100,7 @@ function MenuBar(): JSX.Element {
         <IndicatorWrapper currentPath={currentPath}>
           <div className="indicator" />
         </IndicatorWrapper>
-        <SLink to="todo" ref={todoBtn} onClick={() => setCurrentPath('todo')}>
+        <SLink to="/" ref={todoBtn} onClick={() => setCurrentPath('todo')}>
           todo
         </SLink>
         <SLink
